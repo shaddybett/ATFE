@@ -2,12 +2,35 @@ import React, { useState } from 'react'
 import Nav from '../components/Nav'
 import CreateTeacher from './CreateTeacher'
 import { Table } from 'flowbite-react'
+import {Link} from 'react-router-dom'
+import Swal from 'sweetalert2'
+
 
 function AdminDashboard() {
     const [showForm, setShowForm] = useState(false)
     function handleClick(){
         setShowForm(!showForm)
     }
+    function confirmDelete(){
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+        }
+      });
+    }
+
   return (
     <div>
         {showForm && <CreateTeacher handleClick={handleClick} setShowForm={setShowForm} />}
@@ -43,11 +66,12 @@ function AdminDashboard() {
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
                 <Table.Cell>
-                  <a
+                  <Link className="font-medium text-m-orange hover:underline" to='/editteacher' >Edit</Link>
+                  {/* <
                     href="#"
                     className="font-medium text-m-orange hover:underline">
                     Edit
-                  </a>
+                  </a> */}
                 </Table.Cell>
                 <Table.Cell>
                   <a
@@ -75,7 +99,7 @@ function AdminDashboard() {
                 <Table.Cell>
                   <a
                     href="#"
-                    className="font-medium text-m-orange hover:underline">
+                    className="font-medium text-m-orange hover:underline" onClick={confirmDelete} >
                     Delete
                   </a>
                 </Table.Cell>
@@ -90,3 +114,22 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard
+
+
+// Swal.fire({
+//   title: "Are you sure?",
+//   text: "You won't be able to revert this!",
+//   icon: "warning",
+//   showCancelButton: true,
+//   confirmButtonColor: "#3085d6",
+//   cancelButtonColor: "#d33",
+//   confirmButtonText: "Yes, delete it!"
+// }).then((result) => {
+//   if (result.isConfirmed) {
+//     Swal.fire({
+//       title: "Deleted!",
+//       text: "Your file has been deleted.",
+//       icon: "success"
+//     });
+//   }
+// });
