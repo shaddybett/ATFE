@@ -49,3 +49,10 @@
     @apply w-24 absolute -top-10 right-12 md:-right-20
 }
 
+.card {
+    @apply flex items-center gap-6 px-6 md:px-8 py-4 bg-light-orange rounded-lg w-full max-w-[300px] md:max-w-[230px]
+}
+
+.card img{
+    @apply w-8 h-8
+}
