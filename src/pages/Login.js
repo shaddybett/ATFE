@@ -1,8 +1,29 @@
-import React from 'react'
+import {useContext} from 'react'
 import lock from '../assets/images/lock.svg'
 import { Label } from 'flowbite-react'
+import { UserContext } from '../context/UserContext'
+import Swal from 'sweetalert2'
 
 function Login() {
+    const {login} = useContext(UserContext)
+
+    function handleSubmit(e){
+        e.preventDefault()
+
+        const formData = new FormData(e.currentTarget)
+        const email = formData.get('email')
+        const password = formData.get('password')
+
+        if (password.trim() !== '' && email.trim() !== ''){
+            login(email, password);
+        } else {
+            Swal.fire({
+              icon: 'error',
+              text: 'Fill in all the fields',
+            })
+        }
+    }
+
   return (
     <div className="login-container">
       <div className="form-container">
@@ -14,7 +35,7 @@ function Login() {
             <img className="mx-auto" src={lock} alt="illustration" />
           </div>
         </div>
-        <form className="flex w-full flex-col justify-center gap-4">
+        <form onSubmit={handleSubmit} className="flex w-full flex-col justify-center gap-4">
           <h3 className="text-xl font-semibold text-center">Login</h3>
           <div>
             <div className="mb-2 block">
@@ -24,6 +45,8 @@ function Login() {
               className="input"
               id="email"
               type="email"
+              name='email'
+              autoComplete='on'
               placeholder="name@flowbite.com"
               required
             />
@@ -32,7 +55,7 @@ function Login() {
             <div className="mb-2 block">
               <Label htmlFor="password" value="Your password" />
             </div>
-            <input className="input" id="password" type="password" required />
+            <input className="input" id="password" name="password" placeholder="*********" type="password" autoComplete="current-password" required />
           </div>
           <button className="btn py-3" type="submit">
             Sign In

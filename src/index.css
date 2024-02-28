@@ -26,7 +26,7 @@
 }
 
 .add-teacher-over, .add-student-over, .add-class-over {
-    @apply absolute top-0 left-0 min-h-full w-full z-50 bg-light flex justify-center items-center px-4 py-6
+    @apply absolute top-0 left-0 h-full min-h-full w-full z-50 bg-light flex justify-center items-center px-4 py-6
 }
 
 .add-teacher-over form, .add-student-over > div,  .add-class-over form{

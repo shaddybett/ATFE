@@ -11,23 +11,26 @@ import UserProfile from './pages/UserProfile'
 import AllClasses from './pages/AllClasses'
 import UpdateUserProfile from './pages/UpdateUserProfile'
 import DashboardStudent from './pages/DashboardStudent'
+import UserProvider from './context/UserContext'
 
 function App() {
   return (
-    <Routes>
-        <Route path='/' element={<StudentDashboard />}/>
-        <Route path='/login' element={<Login />} />
-        <Route path='/admin' element={<AdminDashboard />} />
-        <Route path='/teacher' element={<TeacherDashboard />} />
-        <Route path='/students' element={<StudentsPage/>} />
-        <Route path='/class' element={<ClassDetail/>} />
-        <Route path='/editteacher' element={<EditTeacher/>}/>
-        <Route path='/editstudent' element={<EditStudent/>}/>
-        <Route path='/userprofile' element={<UserProfile/>}/>
-        <Route path='/allclasses' element={<AllClasses/>}/>
-        <Route path='/updateuserprofile' element={<UpdateUserProfile/>}/>
-        <Route path='/dashboardstudent' element={<DashboardStudent/>}/>
-    </Routes>
+    <UserProvider>
+        <Routes>
+            <Route path='/' element={<StudentDashboard />}/>
+            <Route path='/login' element={<Login />} />
+            <Route path='/admin' element={<AdminDashboard />} />
+            <Route path='/teacher' element={<TeacherDashboard />} />
+            <Route path='/students' element={<StudentsPage/>} />
+            <Route path='/class' element={<ClassDetail/>} />
+            <Route path='/editteacher' element={<EditTeacher/>}/>
+            <Route path='/editstudent' element={<EditStudent/>}/>
+            <Route path='/profile' element={<UserProfile/>}/>
+            <Route path='/allclasses' element={<AllClasses/>}/>
+            <Route path='/updateuserprofile' element={<UpdateUserProfile/>}/>
+            <Route path='/student' element={<DashboardStudent/>}/>
+        </Routes>
+    </UserProvider>
   )
 }
 

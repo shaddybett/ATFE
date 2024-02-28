@@ -44,86 +44,69 @@ function ClassDetail() {
               </div>
             </div>
           </div>
-          <div className='flex flex-col md:flex-row md:items-center justify-between gap-4'>
-            <div className='flex flex-wrap sm:flex-nowrap items-center gap-4'>
-              <h4 className="font-bold text-lg text-nowrap">Attendance for today</h4>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-4">
+              <h4 className="font-semibold text-lg text-nowrap">
+                Attendance for today
+              </h4>
               <input type="date" className="input max-w-[240px]" />
             </div>
-            <div className='flex items-center gap-2'>
-              <button className='btn py-2'>+ Add student</button>
-              <a className='btn py-2 flex items-center gap-2' href=".">
+            <div className="flex items-center gap-2">
+              <button className="btn py-2">+ Add student</button>
+              <a className="btn py-2 flex items-center gap-2" href=".">
                 <span>Export</span>
-                <img className='w-5 h-5' src={download} alt="icon" />
+                <img className="w-5 h-5" src={download} alt="icon" />
               </a>
             </div>
           </div>
         </section>
-      </main>
-      <Table striped>
+        <div className="overflow-x-auto mt-8">
+          <Table striped>
             <Table.Head>
-              <Table.HeadCell>ID</Table.HeadCell>
-              <Table.HeadCell>First Name</Table.HeadCell>
-              <Table.HeadCell>Last Name</Table.HeadCell>
+              <Table.HeadCell className="break-normal">Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Department</Table.HeadCell>
-              <Table.HeadCell>Phone Number</Table.HeadCell>
-              <Table.HeadCell>
-                <span className="sr-only">Edit</span>
+              <Table.HeadCell className="break-normal">
+                Phone Number
               </Table.HeadCell>
+              <Table.HeadCell>Time in</Table.HeadCell>
+              <Table.HeadCell>Status</Table.HeadCell>
               <Table.HeadCell>
-                <span className="sr-only">Delete</span>
+                <span className="sr-only">Change</span>
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
               <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">54215
-                </Table.Cell>
-                <Table.Cell>Mike</Table.Cell>
-                <Table.Cell>Scott</Table.Cell>
+                <Table.Cell>Mike Scott</Table.Cell>
                 <Table.Cell>examle@gmail.com</Table.Cell>
-                <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
+                <Table.Cell>12:00</Table.Cell>
+                <Table.Cell>Present</Table.Cell>
                 <Table.Cell>
                   <a
-                    href="#"
+                    href="/students"
                     className="font-medium text-m-orange hover:underline">
-                    Edit
-                  </a>
-                </Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="#"
-                    className="font-medium text-m-orange hover:underline">
-                    Delete
+                    Update
                   </a>
                 </Table.Cell>
               </Table.Row>
               <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">54215
-                </Table.Cell>
-                <Table.Cell>Mike</Table.Cell>
-                <Table.Cell>Scott</Table.Cell>
+                <Table.Cell>Mike Scott</Table.Cell>
                 <Table.Cell>examle@gmail.com</Table.Cell>
-                <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
+                <Table.Cell>13:00</Table.Cell>
+                <Table.Cell>Present</Table.Cell>
                 <Table.Cell>
                   <a
-                    href="#"
+                    href="/students"
                     className="font-medium text-m-orange hover:underline">
-                    Edit
-                  </a>
-                </Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="#"
-                    className="font-medium text-m-orange hover:underline">
-                    Delete
+                    Update
                   </a>
                 </Table.Cell>
               </Table.Row>
-              
             </Table.Body>
           </Table>
+        </div>
+      </main>
     </div>
   )
 }

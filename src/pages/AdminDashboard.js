@@ -70,14 +70,14 @@ function AdminDashboard() {
                 <Table.Cell>+25684855</Table.Cell>
                 <Table.Cell>
                   <a
-                    href="#"
+                    href="/"
                     className="font-medium text-m-orange hover:underline">
                     Edit
                   </a>
                 </Table.Cell>
                 <Table.Cell>
                   <a
-                    href="#"
+                    href="/"
                     className="font-medium text-m-orange hover:underline">
                     Delete
                   </a>
@@ -96,7 +96,7 @@ function AdminDashboard() {
                 </Table.Cell>
                 <Table.Cell>
                   <a
-                    href="#"
+                    href="/"
                     className="font-medium text-m-orange hover:underline">
                     Delete
                   </a>

@@ -1,8 +1,12 @@
-import React from "react";
-import { Navbar, Avatar, Dropdown } from "flowbite-react";
-import { Link } from "react-router-dom";
+import {useContext} from 'react'
+import { Navbar, Avatar, Dropdown } from 'flowbite-react'
+import { Link } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
+import defaultPic from '../assets/images/person-circle.svg'
 
 function Nav() {
+    const {logout, currentUser} = useContext(UserContext)
+    
   return (
     <header className="shadow-bs-light">
       <Navbar className="-full mx-auto max-w-7xl" fluid rounded>
@@ -18,26 +22,34 @@ function Nav() {
             label={
               <Avatar
                 alt="User settings"
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                img={currentUser?.avatar_url ? currentUser.avatar_url : defaultPic}
                 rounded
               />
-            }
-          >
+            }>
             <Dropdown.Header>
-              <span className="block text-sm">Bonnie Green</span>
               <span className="block truncate text-sm font-medium">
-                name@flowbite.com
+                {currentUser?.email}
               </span>
             </Dropdown.Header>
             <Dropdown.Item>
-              <Link to="/userprofile">Profile</Link>
+              <Link to="/profile">Profile</Link>
             </Dropdown.Item>
           </Dropdown>
-          <Navbar.Toggle />
+          <button onClick={logout} className="text-blue-800 font-semibold border-l-2 border-neutral-300 pl-2 ml-2">
+            Logout
+          </button>
+          {/* <Navbar.Toggle /> */}
         </div>
+        <Navbar.Collapse>
+          {/* <Navbar.Link
+            className="ml-auto hover:bg-orange-200 hover:text-m-orange"
+            href="#">
+            Students
+          </Navbar.Link> */}
+        </Navbar.Collapse>
       </Navbar>
     </header>
-  );
+  )
 }
 
-export default Nav;
+export default Nav
