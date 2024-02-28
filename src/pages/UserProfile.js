@@ -1,6 +1,5 @@
 import React,{ useState } from "react";
 import Nav from "../components/Nav";
-import { Link } from "react-router-dom";
 import UpdateUserProfile from "./UpdateUserProfile"
 
 
