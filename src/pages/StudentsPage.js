@@ -2,17 +2,25 @@ import React, { useState } from "react";
 import { Table } from "flowbite-react";
 import CreateStudent from "./CreateStudent";
 import Nav from "../components/Nav";
+import EditStudent from "./EditStudent"
 
 function StudentsPage() {
   const [showForm, setShowForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   function handleClick() {
     setShowForm(!showForm);
   }
+  function handleEdit() {
+    setShowEditForm(!showEditForm);
+  }
+
   return (
     <div>
       {showForm && (
         <CreateStudent handleClick={handleClick} setShowForm={setShowForm} />
       )}
+      {showEditForm  && <EditStudent handleEdit={handleEdit} setShowEditForm={setShowEditForm}/>}
+
       <Nav />
       <main className="container">
         <div className="flex flex-col md:flex-row gap-2 justify-between md:items-center mb-10 mt-14">
@@ -82,12 +90,10 @@ function StudentsPage() {
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
                 <Table.Cell>
-                  <a
-                    href="/editstudent"
-                    className="font-medium text-m-orange hover:underline"
-                  >
+                  <span onClick={handleEdit}
+                    className="font-medium text-m-orange hover:underline cursor-pointer">
                     Edit
-                  </a>
+                  </span>
                 </Table.Cell>
                 <Table.Cell>
                   <a
@@ -108,12 +114,10 @@ function StudentsPage() {
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
                 <Table.Cell>
-                  <a
-                    href="/students"
-                    className="font-medium text-m-orange hover:underline"
-                  >
+                  <span onClick={handleEdit}
+                    className="font-medium text-m-orange hover:underline cursor-pointer">
                     Edit
-                  </a>
+                  </span>
                 </Table.Cell>
                 <Table.Cell>
                   <a

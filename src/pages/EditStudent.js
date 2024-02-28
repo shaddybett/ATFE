@@ -1,7 +1,7 @@
 import React from "react";
 import close from "../assets/images/close.svg";
 
-function CreateTeacher({ setShowForm, handleClick }) {
+function CreateTeacher({ setShowEditForm, handleEdit }) {
   function handleSubmit(e) {
     e.preventDefault();
   }
@@ -17,7 +17,7 @@ function CreateTeacher({ setShowForm, handleClick }) {
           </h3>
           <button
             className="hover:bg-orange-100 rounded-full p-1"
-            onClick={handleClick}
+            onClick={handleEdit}
             type="button"
           >
             <img className="inline w-7 h-7" src={close} alt="icon" />
