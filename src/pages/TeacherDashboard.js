@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState} from 'react'
 import Nav from '../components/Nav'
 import grad from '../assets/images/grad.svg'
 import chevRight from '../assets/images/chevron-forward-outline.svg'
@@ -16,7 +16,7 @@ function TeacherDashboard() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (hoveredCard !== null && !event.target.closest('.class-card')) {
-        setHoveredCard(null) 
+        setHoveredCard(null)
       }
     }
 
@@ -55,7 +55,7 @@ function TeacherDashboard() {
       </section>
       <section className="w-full max-w-7xl mx-auto px-4 py-4">
         <div className="flex w-full justify-between border-b border-neutral-300 mb-6 pb-2">
-          <h3 className="text-2xl font-medium">Your classes</h3>
+          <h3 className="text-2xl">Your classes</h3>
           <button className="btn py-1" onClick={handleClose}>
             + New
           </button>
