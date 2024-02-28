@@ -1,22 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import close from '../assets/images/close.svg'
-import upload from '../assets/images/upload.svg'
-
+import Swal from 'sweetalert2'
+import { UserContext } from '../context/UserContext'
 
 function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
+    const {updateProfile} = useContext(UserContext)
+
     function handleSubmit(e){
         e.preventDefault()
+
+        const formData = new FormData(e.currentTarget)
+        const password = formData.get('password')
+        const password2 = formData.get('password2')
+        if (password !== password2) {
+          Swal.fire({
+            icon: 'error',
+            text: 'Passwords do not match!',
+          })
+          return
+        }
+        const user = Object.fromEntries(formData)
+        delete user.password2
+        console.log(user['file-upload'] === '');
+        updateProfile(user)
     }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-  }
-  function handleUpload(e) {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    console.log(Object.fromEntries(formData))
-    fetch()
-  }
   return (
     <div className="add-teacher-over">
       <form
@@ -40,9 +48,10 @@ function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
             </div>
             <input
               className="input"
-              id="first-name"
+              id="first_name"
+              name='fist_name'
               type="text"
-              value={currentUser?.first_name}
+              defaultValue={currentUser?.first_name}
               required
             />
           </div>
@@ -52,9 +61,10 @@ function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
             </div>
             <input
               className="input"
-              id="last-name"
+              id="last_name"
+              name='last_name'
               type="text"
-              value={currentUser?.last_name}
+              defaultValue={currentUser?.last_name}
               required
             />
           </div>
@@ -67,9 +77,10 @@ function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
             <input
               className="input"
               id="email"
+              name="email"
               type="email"
               placeholder="name@flowbite.com"
-              value={currentUser?.email}
+              defaultValue={currentUser?.email}
               required
             />
           </div>
@@ -80,8 +91,9 @@ function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
             <input
               className="input"
               id="phone_number"
+              name='phone_number'
               type="text"
-              value={currentUser?.phone_number}
+              defaultValue={currentUser?.phone_number}
               required
             />
           </div>
@@ -89,49 +101,27 @@ function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
         <div className="form-row">
           <div className="w-full md:max-w-[300px]">
             <div className="mb-2 block">
-              <label htmlFor="department">Department</label>
+              <label htmlFor="password">Password</label>
             </div>
-            <input className="input" id="department" type="text" required />
+            <input className="input" id="password" name='password' type="password" placeholder='********' required />
           </div>
           <div className="w-full md:max-w-[300px]">
             <div className="mb-2 block">
-              <label htmlFor="department">Course</label>
+              <label htmlFor="password2">Confirm Password</label>
             </div>
-            <input className="input" id="department" type="text" required />
+            <input className="input" id="password2" name='password2' type="password" placeholder='********' required />
           </div>
         </div>
-        <div className="form-row">
-          <div className="w-full md:max-w-[300px]">
-            <div className="mb-2 block">
-              <label htmlFor="department">Password</label>
-            </div>
-            <input className="input" id="department" type="text" required />
+        <div className="w-full md:w-2/4">
+          <div className="mb-2 block">
+            <label htmlFor="file-upload" aria-label="file-upload">Profile Picture</label>
           </div>
-          <div className="w-full md:max-w-[300px]">
-            <div className="mb-2 block">
-              <label htmlFor="department">Confirm Password</label>
-            </div>
-            <input className="input" id="department" type="text" required />
+          <div className="flex min-w-fit w-full rounded-lg border border-neutral-300">
+            <input type="file" name="file-upload" id="file-upload" />
           </div>
         </div>
-        <div onClick={handleUpload} className="w-full md:w-2/4 mx-auto">
-            <div>
-              <div className="mb-2 block">
-                <label htmlFor="file-upload" aria-label="file-upload"></label>
-              </div>
-              <div className="flex min-w-fit w-full rounded-lg border border-neutral-300">
-                <input type="file" name="file-upload" id="file-upload" />
-              </div>
-            </div>
-            <button
-              className="btn w-full py-3 mt-4 flex items-center gap-2 justify-center"
-              type="submit">
-              <img className="inline w-5 h-5" src={upload} alt="icon" />
-              Upload Image
-            </button>
-          </div>
-
-        <button className="btn py-3 my-3 w-fit items-center " type="submit">
+        
+        <button className="btn py-3 my-3 ml-auto w-fit items-center " type="submit">
           Update Profile
         </button>
       </form>

@@ -1,7 +1,7 @@
 import React from "react";
 import close from "../assets/images/close.svg";
 
-function CreateTeacher({ setShowForm, handleClick }) {
+function CreateTeacher({ setShowTeacherForm, handleEditTeacher }) {
   function handleSubmit(e) {
     e.preventDefault();
   }
@@ -17,7 +17,7 @@ function CreateTeacher({ setShowForm, handleClick }) {
           </h3>
           <button
             className="hover:bg-orange-100 rounded-full p-1"
-            onClick={handleClick}
+            onClick={handleEditTeacher}
             type="button"
           >
             <img className="inline w-7 h-7" src={close} alt="icon" />
@@ -67,7 +67,7 @@ function CreateTeacher({ setShowForm, handleClick }) {
         </div>
 
         <button className="btn py-3 my-3" type="submit">
-          Create Profile
+          Update Profile
         </button>
       </form>
     </div>

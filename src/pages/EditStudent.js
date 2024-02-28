@@ -60,9 +60,9 @@ function CreateTeacher({ setShowEditForm, handleEdit }) {
         <div className="form-row">
           <div className="w-full md:max-w-[300px]">
             <div className="mb-2 block">
-              <label htmlFor="department">Department</label>
+              <label htmlFor="course">Course</label>
             </div>
-            <input className="input" id="department" type="text" required />
+            <input className="input" id="course" type="text" required />
           </div>
         </div>
 
