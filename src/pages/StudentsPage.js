@@ -72,6 +72,8 @@ function StudentsPage() {
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Course</Table.HeadCell>
               <Table.HeadCell>Phone Number</Table.HeadCell>
+              
+
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
@@ -89,6 +91,7 @@ function StudentsPage() {
                 <Table.Cell>examle@gmail.com</Table.Cell>
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
+                <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">Download Report</Table.Cell>
                 <Table.Cell>
                   <span onClick={handleEdit}
                     className="font-medium text-m-orange hover:underline cursor-pointer">
@@ -113,6 +116,7 @@ function StudentsPage() {
                 <Table.Cell>examle@gmail.com</Table.Cell>
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
+                <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">Download Report</Table.Cell>
                 <Table.Cell>
                   <span onClick={handleEdit}
                     className="font-medium text-m-orange hover:underline cursor-pointer">
