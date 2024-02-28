@@ -1,10 +1,17 @@
-import React from "react";
+import React,{ useState } from "react";
 import Nav from "../components/Nav";
 import { Link } from "react-router-dom";
+import UpdateUserProfile from "./UpdateUserProfile"
+
 
 function UserProfile() {
+  const [showForm, setShowForm] = useState(false)
+    function handleClick(){
+        setShowForm(!showForm)
+    }
   return (
     <div>
+      {showForm  && <UpdateUserProfile handleClick={handleClick} setShowForm={setShowForm}/>}
       <Nav />
       <div className="max-w-7xl mx-auto px-4 py-8 flex">
         {/* Left Column */}
@@ -40,8 +47,8 @@ function UserProfile() {
               <span className="font-semibold">Phone Number:</span> +123456789
             </div>
             {/* Update Button */}
-            <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-              <Link to="/updateuserprofile">Update</Link>
+            <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+             Update
             </button>
           </div>
         </div>
