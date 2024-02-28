@@ -100,6 +100,10 @@ export default function UserProvider({ children }) {
     }
   }
 
+  useEffect(()=>{
+    getAuthenticatedUser()
+  },[authToken, onchange])
+
   // Context data
   const contextData = {
     login,
