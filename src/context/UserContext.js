@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import axios from 'axios'
 
 export const UserContext = createContext()
 
@@ -14,8 +15,8 @@ export default function UserProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
 
   const navigate = useNavigate()
-    const apiEndpoint = 'https://attendance-tracker-backend-ws6l.onrender.com'
-  // const apiEndpoint = 'http://127.0.0.1:5000'
+  // const apiEndpoint = 'https://attendance-tracker-backend-ws6l.onrender.com'
+  const apiEndpoint = 'http://127.0.0.1:5000'
 
   //   Login User
   function login(email, password) {
@@ -80,7 +81,7 @@ export default function UserProvider({ children }) {
   }
 
   // Get authenticated user
-  function getAuthenticatedUser(){
+  function getAuthenticatedUser() {
     if (sessionStorage.getItem('authToken')) {
       fetch(`${apiEndpoint}/authenticated_user`, {
         method: 'GET',
@@ -100,9 +101,34 @@ export default function UserProvider({ children }) {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getAuthenticatedUser()
-  },[authToken, onchange])
+  }, [authToken, onchange])
+
+  // update user profile
+  async function updateProfile(user) {
+    try {
+      const resp = await axios.patch(
+        `${apiEndpoint}/update/${currentUser.user_id}`,
+        user,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      setOnchange(!onchange)
+      Swal.fire('Success', 'Profile updated successfully', 'success')
+      navigate('/profile')
+    } catch (error) {
+      console.log(error.response.data.error)
+      Swal.fire({
+        icon: 'error',
+        text: error.response.data.error,
+      })
+    }
+  }
 
   // Context data
   const contextData = {
@@ -111,6 +137,9 @@ export default function UserProvider({ children }) {
     authToken,
     apiEndpoint,
     currentUser,
+    updateProfile,
+    onchange,
+    setOnchange,
   }
 
   return (

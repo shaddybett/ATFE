@@ -2,11 +2,12 @@ import React,{ useState, useContext } from "react";
 import Nav from "../components/Nav";
 import UpdateUserProfile from "./UpdateUserProfile"
 import { UserContext } from "../context/UserContext";
+import defaultPic from '../assets/images/person-circle.svg'
 
 
 function UserProfile() {
   const [showForm, setShowForm] = useState(false)
-  const {currentUser} = useContext(UserContext)
+  const {currentUser, apiEndpoint} = useContext(UserContext)
 
     function handleClick(){
         setShowForm(!showForm)
@@ -21,20 +22,24 @@ function UserProfile() {
         />
       )}
       <Nav />
-      <div className="max-w-7xl mx-auto px-4 py-8 flex">
+      <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
         {/* Left Column */}
-        <div className="w-1/3 pr-8">
+        <div className="w-full max-w-[300px] mx-auto md:w-1/3">
           {/* User Image */}
           <img
-            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+            src={
+              currentUser?.avatar_url
+                ? `${apiEndpoint}/${currentUser.avatar_url}`
+                : defaultPic
+            }
             alt="User Profile"
-            className="w-full rounded-lg"
+            className="w-full bg-gray-100 rounded-lg"
           />
         </div>
         {/* Right Column */}
-        <div className="w-2/3">
+        <div className="w-full max-w-[300px] md:max-w-full mx-auto md:w-2/3">
           {/* User Details */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-8">
             <h2 className="text-xl font-semibold mb-4">User Details</h2>
             <div className="mb-2">
               <span className="font-semibold">First Name:</span>{' '}
@@ -46,14 +51,6 @@ function UserProfile() {
             </div>
             <div className="mb-2">
               <span className="font-semibold">Email:</span> {currentUser?.email}
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold">Department:</span>{' '}
-              {currentUser?.department}
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold">Course:</span>{' '}
-              {currentUser?.course}
             </div>
             <div className="mb-2">
               <span className="font-semibold">Phone Number:</span>{' '}

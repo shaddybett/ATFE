@@ -13,6 +13,7 @@ import EditClass from './EditClass'
 function TeacherDashboard() {
   const [hoveredCard, setHoveredCard] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [showEditClassForm, setShowEditClassForm] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -27,7 +28,6 @@ function TeacherDashboard() {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [hoveredCard])
-  const [showEditClassForm, setShowEditClassForm] = useState(false);
 
   function handleEditClass() {
     setShowEditClassForm(!showEditClassForm);

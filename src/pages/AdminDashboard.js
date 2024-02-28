@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Nav from '../components/Nav'
 import CreateTeacher from './CreateTeacher'
+import EditTeacher from './EditTeacher'
 import { Table } from 'flowbite-react'
 
 import grad from '../assets/images/grad.svg'
@@ -10,38 +11,53 @@ import { Link } from 'react-router-dom'
 
 function AdminDashboard() {
     const [showForm, setShowForm] = useState(false)
+    const [showEditTeacherForm, setShowEditTeacherForm] = useState(false)
+
     function handleClick(){
         setShowForm(!showForm)
     }
+    function handleEditTeacher() {
+    setShowEditTeacherForm(!showEditTeacherForm)
+    }
   return (
     <div>
-        {showForm && <CreateTeacher handleClick={handleClick} setShowForm={setShowForm} />}
+      {showForm && (
+        <CreateTeacher handleClick={handleClick} setShowForm={setShowForm} />
+      )}
+      {showEditTeacherForm && (
+        <EditTeacher
+          handleEditTeacher={handleEditTeacher}
+          setShowEditTeacherForm={setShowEditTeacherForm}
+        />
+      )}
       <Nav />
       <main className="container">
-        <div className='flex gap-4 my-10'>
-        <Link to="/students" className="block w-full max-w-[350px]">
-          <div className="flex gap-4 items-center px-4 pb-4 pt-14 rounded-lg bg-light-orange hover:bg-t-orange transition">
-            <img className="w-12 h-12" src={grad} alt="icon" />
-            <div className="flex justify-between w-full items-end">
-              <h3 className="text-4xl font-medium">Students</h3>
-              <img className="w-7 h-7" src={chevRight} alt="icon" />
+        <div className="flex gap-4 my-10">
+          <Link to="/students" className="block w-full max-w-[350px]">
+            <div className="flex gap-4 items-center px-4 pb-4 pt-14 rounded-lg bg-light-orange hover:bg-t-orange transition">
+              <img className="w-12 h-12" src={grad} alt="icon" />
+              <div className="flex justify-between w-full items-end">
+                <h3 className="text-4xl font-medium">Students</h3>
+                <img className="w-7 h-7" src={chevRight} alt="icon" />
+              </div>
             </div>
-          </div>
-        </Link>
-      
-        <Link to="/allclasses" className="block w-full max-w-[350px]">
-          <div className="flex gap-4 items-center px-4 pb-4 pt-14 rounded-lg bg-light-orange hover:bg-t-orange transition">
-            <img className="w-12 h-12" src={grad} alt="icon" />
-            <div className="flex justify-between w-full items-end">
-              <h3 className="text-4xl font-medium">Classes</h3>
-              <img className="w-7 h-7" src={chevRight} alt="icon" />
+          </Link>
+
+          <Link to="/allclasses" className="block w-full max-w-[350px]">
+            <div className="flex gap-4 items-center px-4 pb-4 pt-14 rounded-lg bg-light-orange hover:bg-t-orange transition">
+              <img className="w-12 h-12" src={grad} alt="icon" />
+              <div className="flex justify-between w-full items-end">
+                <h3 className="text-4xl font-medium">Classes</h3>
+                <img className="w-7 h-7" src={chevRight} alt="icon" />
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
         </div>
         <div className="flex justify-between items-center mb-10 ">
           <h3 className="text-2xl font-semibold">Teachers</h3>
-          <button onClick={handleClick} className="btn py-2">+ Add</button>
+          <button onClick={handleClick} className="btn py-2">
+            + Add
+          </button>
         </div>
         <div className="overflow-x-auto">
           <Table striped>
@@ -61,7 +77,8 @@ function AdminDashboard() {
             </Table.Head>
             <Table.Body className="divide-y">
               <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">54215
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  54215
                 </Table.Cell>
                 <Table.Cell>Mike</Table.Cell>
                 <Table.Cell>Scott</Table.Cell>
@@ -69,22 +86,21 @@ function AdminDashboard() {
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
                 <Table.Cell>
-                  <a
-                    href="/"
-                    className="font-medium text-m-orange hover:underline">
+                  <span onClick={handleEditTeacher}
+                    className="cursor-pointer font-medium text-m-orange hover:underline">
                     Edit
-                  </a>
+                  </span>
                 </Table.Cell>
                 <Table.Cell>
-                  <a
-                    href="/"
+                  <span
                     className="font-medium text-m-orange hover:underline">
                     Delete
-                  </a>
+                  </span>
                 </Table.Cell>
               </Table.Row>
               <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">54215
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  54215
                 </Table.Cell>
                 <Table.Cell>Mike</Table.Cell>
                 <Table.Cell>Scott</Table.Cell>
@@ -92,17 +108,19 @@ function AdminDashboard() {
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
                 <Table.Cell>
-                <Link className="font-medium text-m-orange hover:underline" to='/editteacher' >Edit</Link>
+                  <span onClick={handleEditTeacher}
+                    className="cursor-pointer font-medium text-m-orange hover:underline"
+                    >
+                    Edit
+                  </span>
                 </Table.Cell>
                 <Table.Cell>
-                  <a
-                    href="/"
+                  <span
                     className="font-medium text-m-orange hover:underline">
                     Delete
-                  </a>
+                  </span>
                 </Table.Cell>
               </Table.Row>
-              
             </Table.Body>
           </Table>
         </div>

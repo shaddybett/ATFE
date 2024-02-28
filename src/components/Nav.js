@@ -5,8 +5,8 @@ import { UserContext } from '../context/UserContext'
 import defaultPic from '../assets/images/person-circle.svg'
 
 function Nav() {
-    const {logout, currentUser} = useContext(UserContext)
-    
+    const {logout, currentUser, apiEndpoint} = useContext(UserContext)
+
   return (
     <header className="shadow-bs-light">
       <Navbar className="-full mx-auto max-w-7xl" fluid rounded>
@@ -22,7 +22,7 @@ function Nav() {
             label={
               <Avatar
                 alt="User settings"
-                img={currentUser?.avatar_url ? currentUser.avatar_url : defaultPic}
+                img={currentUser?.avatar_url ? `${apiEndpoint}/${currentUser.avatar_url}` : defaultPic}
                 rounded
               />
             }>
