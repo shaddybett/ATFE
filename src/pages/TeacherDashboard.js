@@ -8,6 +8,7 @@ import pencil from '../assets/images/pencil.svg'
 import { Link } from 'react-router-dom'
 import { ListGroup } from 'flowbite-react'
 import CreateClass from './CreateClass'
+import EditClass from './EditClass'
 
 function TeacherDashboard() {
   const [hoveredCard, setHoveredCard] = useState(null)
@@ -26,6 +27,11 @@ function TeacherDashboard() {
       document.removeEventListener('click', handleClickOutside)
     }
   }, [hoveredCard])
+  const [showEditClassForm, setShowEditClassForm] = useState(false);
+
+  function handleEditClass() {
+    setShowEditClassForm(!showEditClassForm);
+  }
 
   function handleClose() {
     setShowForm(!showForm)
@@ -40,6 +46,9 @@ function TeacherDashboard() {
       {showForm && (
         <CreateClass handleClose={handleClose} setShowForm={setShowForm} />
       )}
+
+      {showEditClassForm  && <EditClass handleEditClass={handleEditClass} setShowEditClassForm={setShowEditClassForm}/>}
+
       <section
         onClick={() => handleClick(null)}
         className="w-full max-w-7xl mx-auto px-4 py-12 ">
@@ -69,7 +78,7 @@ function TeacherDashboard() {
                 className="class-card relative flex justify-between gap-6 items-end w-full max-w-xl bg-light-orange hover:bg-t-orange transition px-4 pt-10 pb-2 rounded-lg">
                 <div>
                   <h4 className="font-semibold text-2xl">
-                    Lorem ipsum dolor sit amet.
+                    Programming with Python
                   </h4>
                   <p>8:00 AM - 10:00 AM</p>
                 </div>
@@ -87,7 +96,7 @@ function TeacherDashboard() {
                   className={`list-group ${
                     hoveredCard === index ? 'opacity-100' : 'opacity-0'
                   }`}>
-                  <ListGroup.Item>
+                  <ListGroup.Item onClick={handleEditClass}>
                     <img src={pencil} alt="icon" className="w-3 h-3 mr-2" />
                     Edit
                   </ListGroup.Item>
