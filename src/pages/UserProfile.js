@@ -1,16 +1,25 @@
-import React,{ useState } from "react";
+import React,{ useState, useContext } from "react";
 import Nav from "../components/Nav";
 import UpdateUserProfile from "./UpdateUserProfile"
+import { UserContext } from "../context/UserContext";
 
 
 function UserProfile() {
   const [showForm, setShowForm] = useState(false)
+  const {currentUser} = useContext(UserContext)
+
     function handleClick(){
         setShowForm(!showForm)
     }
   return (
     <div>
-      {showForm  && <UpdateUserProfile handleClick={handleClick} setShowForm={setShowForm}/>}
+      {showForm && (
+        <UpdateUserProfile
+          handleClick={handleClick}
+          setShowForm={setShowForm}
+          currentUser={currentUser}
+        />
+      )}
       <Nav />
       <div className="max-w-7xl mx-auto px-4 py-8 flex">
         {/* Left Column */}
@@ -28,32 +37,39 @@ function UserProfile() {
           <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
             <h2 className="text-xl font-semibold mb-4">User Details</h2>
             <div className="mb-2">
-              <span className="font-semibold">First Name:</span> John
+              <span className="font-semibold">First Name:</span>{' '}
+              {currentUser?.first_name}
             </div>
             <div className="mb-2">
-              <span className="font-semibold">Last Name:</span> Doe
+              <span className="font-semibold">Last Name:</span>{' '}
+              {currentUser?.last_name}
             </div>
             <div className="mb-2">
-              <span className="font-semibold">Email:</span> john@example.com
+              <span className="font-semibold">Email:</span> {currentUser?.email}
             </div>
             <div className="mb-2">
-              <span className="font-semibold">Department:</span> IT
+              <span className="font-semibold">Department:</span>{' '}
+              {currentUser?.department}
             </div>
             <div className="mb-2">
-              <span className="font-semibold">Course:</span> Computer Science
+              <span className="font-semibold">Course:</span>{' '}
+              {currentUser?.course}
             </div>
             <div className="mb-2">
-              <span className="font-semibold">Phone Number:</span> +123456789
+              <span className="font-semibold">Phone Number:</span>{' '}
+              {currentUser?.phone_number}
             </div>
             {/* Update Button */}
-            <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-             Update
+            <button
+              onClick={handleClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+              Update
             </button>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default UserProfile;
