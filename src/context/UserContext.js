@@ -14,8 +14,8 @@ export default function UserProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
 
   const navigate = useNavigate()
-  //   const apiEndpoint = 'https://attendance-tracker-backend-ws6l.onrender.com'
-  const apiEndpoint = 'http://127.0.0.1:5000'
+    const apiEndpoint = 'https://attendance-tracker-backend-ws6l.onrender.com'
+  // const apiEndpoint = 'http://127.0.0.1:5000'
 
   //   Login User
   function login(email, password) {

@@ -22,6 +22,7 @@ function App() {
     <ClassProvider>
 
       <UserProvider>
+        
         <Routes>
               <Route path='/' element={<StudentDashboard />}/>
               <Route path='/login' element={<Login />} />
@@ -29,18 +30,19 @@ function App() {
               <Route path='/teacher' element={<TeacherDashboard />} />
               <Route path='/students' element={<StudentsPage/>} />
               <Route path='/class' element={<ClassDetail/>} />
-          <Route path='/editclass' element={<EditClass/>}/>
+              <Route path='/editclass' element={<EditClass/>}/>
               <Route path='/editteacher' element={<EditTeacher/>}/>
               <Route path='/editstudent' element={<EditStudent/>}/>
               <Route path='/profile' element={<UserProfile/>}/>
               <Route path='/allclasses' element={<AllClasses/>}/>
-          <Route path='/attendance' element={<Attendance/>}/>
+              <Route path='/attendance' element={<Attendance/>}/>
               <Route path='/updateuserprofile' element={<UpdateUserProfile/>}/>
               <Route path='/student' element={<DashboardStudent/>}/>
           </Routes>
 
+      </UserProvider>
+
     </ClassProvider>
-    </UserProvider>
   )
 }
 
