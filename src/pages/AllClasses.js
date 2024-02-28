@@ -3,7 +3,7 @@ import { Table } from "flowbite-react";
 import CreateStudent from "./CreateStudent";
 import Nav from "../components/Nav";
 
-function StudentsPage() {
+function AllClasses() {
   const [showForm, setShowForm] = useState(false);
   function handleClick() {
     setShowForm(!showForm);
@@ -16,7 +16,7 @@ function StudentsPage() {
       <Nav />
       <main className="container">
         <div className="flex flex-col md:flex-row gap-2 justify-between md:items-center mb-10 mt-14">
-          <h3 className="text-2xl font-semibold">Students</h3>
+          <h3 className="text-2xl font-semibold">Classes</h3>
           <div className="flex items-center gap-4">
             <div className="flex gap-2 items-center">
               <input
@@ -50,20 +50,21 @@ function StudentsPage() {
                 </svg>
               </label>
             </div>
-            <button onClick={handleClick} className="btn min-w-fit py-2">
+            {/* <button onClick={handleClick} className="btn min-w-fit py-2">
               + Add
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="overflow-x-auto">
           <Table striped>
             <Table.Head>
               <Table.HeadCell>ID</Table.HeadCell>
-              <Table.HeadCell>First Name</Table.HeadCell>
-              <Table.HeadCell>Last Name</Table.HeadCell>
-              <Table.HeadCell>Email</Table.HeadCell>
-              <Table.HeadCell>Course</Table.HeadCell>
-              <Table.HeadCell>Phone Number</Table.HeadCell>
+              <Table.HeadCell>Class Name</Table.HeadCell>
+              <Table.HeadCell>Start Time</Table.HeadCell>
+              <Table.HeadCell>End Time</Table.HeadCell>
+              <Table.HeadCell>Start Date</Table.HeadCell>
+              <Table.HeadCell>End Date</Table.HeadCell>
+              <Table.HeadCell>Teacher</Table.HeadCell>
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
@@ -81,22 +82,7 @@ function StudentsPage() {
                 <Table.Cell>examle@gmail.com</Table.Cell>
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="/editstudent"
-                    className="font-medium text-m-orange hover:underline"
-                  >
-                    Edit
-                  </a>
-                </Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="/students"
-                    className="font-medium text-m-orange hover:underline"
-                  >
-                    Delete
-                  </a>
-                </Table.Cell>
+
               </Table.Row>
               <Table.Row className="bg-white">
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
@@ -107,22 +93,7 @@ function StudentsPage() {
                 <Table.Cell>examle@gmail.com</Table.Cell>
                 <Table.Cell>IT</Table.Cell>
                 <Table.Cell>+25684855</Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="/students"
-                    className="font-medium text-m-orange hover:underline"
-                  >
-                    Edit
-                  </a>
-                </Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="/students"
-                    className="font-medium text-m-orange hover:underline"
-                  >
-                    Delete
-                  </a>
-                </Table.Cell>
+
               </Table.Row>
             </Table.Body>
           </Table>
@@ -132,4 +103,4 @@ function StudentsPage() {
   );
 }
 
-export default StudentsPage;
+export default AllClasses;
