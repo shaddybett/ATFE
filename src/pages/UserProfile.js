@@ -2,8 +2,6 @@ import React,{ useState, useContext } from "react";
 import Nav from "../components/Nav";
 import UpdateUserProfile from "./UpdateUserProfile"
 import { UserContext } from "../context/UserContext";
-import defaultPic from '../assets/images/person-circle.svg'
-
 
 function UserProfile() {
   const [showForm, setShowForm] = useState(false)
@@ -30,10 +28,10 @@ function UserProfile() {
             src={
               currentUser?.avatar_url
                 ? `${apiEndpoint}/${currentUser.avatar_url}`
-                : defaultPic
+                : `${apiEndpoint}/media/blank-profile-picture.webp`
             }
             alt="User Profile"
-            className="w-full bg-gray-100 rounded-lg"
+            className="w-full max-h-[300px] object-cover object-top bg-gray-100 rounded-lg"
           />
         </div>
         {/* Right Column */}

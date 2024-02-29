@@ -1,8 +1,7 @@
 import {useContext} from 'react'
-import { Navbar, Avatar, Dropdown } from 'flowbite-react'
+import { Navbar, Dropdown } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
-import defaultPic from '../assets/images/person-circle.svg'
 
 function Nav() {
     const {logout, currentUser, apiEndpoint} = useContext(UserContext)
@@ -20,10 +19,14 @@ function Nav() {
             arrowIcon={false}
             inline
             label={
-              <Avatar
+              <img
                 alt="User settings"
-                img={currentUser?.avatar_url ? `${apiEndpoint}/${currentUser.avatar_url}` : defaultPic}
-                rounded
+                src={
+                  currentUser?.avatar_url
+                    ? `${apiEndpoint}/${currentUser.avatar_url}`
+                    : `${apiEndpoint}/media/blank-profile-picture.webp`
+                }
+                className="rounded w-8 h-8 object-cover object-top"
               />
             }>
             <Dropdown.Header>
@@ -35,7 +38,9 @@ function Nav() {
               <Link to="/profile">Profile</Link>
             </Dropdown.Item>
           </Dropdown>
-          <button onClick={logout} className="text-blue-800 font-semibold border-l-2 border-neutral-300 pl-2 ml-2">
+          <button
+            onClick={logout}
+            className="text-blue-800 font-semibold border-l-2 border-neutral-300 pl-2 ml-2">
             Logout
           </button>
           {/* <Navbar.Toggle /> */}
