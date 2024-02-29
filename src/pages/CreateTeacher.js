@@ -1,6 +1,7 @@
 import React from 'react'
 import close from '../assets/images/close.svg'
 
+
 function CreateTeacher({setShowForm, handleClick}) {
     function handleSubmit(e){
         e.preventDefault()
