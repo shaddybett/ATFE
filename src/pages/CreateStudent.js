@@ -2,6 +2,7 @@ import React from 'react'
 import upload from '../assets/images/upload.svg'
 import close from '../assets/images/close.svg'
 
+
 function CreateStudent({ setShowForm, handleClick }) {
 
   function handleSubmit(e) {

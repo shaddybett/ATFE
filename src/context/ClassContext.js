@@ -1,9 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { UserContext } from './UserContext';
+import { json } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 const ClassContext = createContext();
 
-const API_URL = 'https://attendance-tracker-backend-ws6l.onrender.com/';
+// const API_URL = 'https://attendance-tracker-backend-ws6l.onrender.com/';
+const API_URL = 'http://127.0.0.1:5000';
+
 export const ClassProvider = ({ children }) => {
   const [classes, setClasses] = useState([]);
   const [classDetails, setClassDetails] = useState({});
@@ -15,7 +21,11 @@ export const ClassProvider = ({ children }) => {
     // get all classes
     const fetchClasses = async () => {
       try {
-        const response = await axios.get(`${API_URL}/class`);
+        const response = await axios.get(`${API_URL}/class`, {
+            headers: {
+                Authorization:`Bearer ${sessionStorage.getItem('authToken')}`
+            }
+        });
         setClasses(response.data);
       } catch (error) {
         setError('Error fetching classes');
@@ -27,16 +37,7 @@ export const ClassProvider = ({ children }) => {
     fetchClasses();
   }, []);
 
-  // get class details
-  const fetchClassDetails = async (classId) => {
-    try {
-      const response = await axios.get(`${API_URL}/class/${classId}`);
-      setClassDetails(response.data);
-    } catch (error) {
-      setError('Error fetching class details');
-    }
-  };
-
+ 
   // get students in a particular class
   const fetchClassStudents = async (classId) => {
     try {
@@ -48,9 +49,14 @@ export const ClassProvider = ({ children }) => {
   };
 
   // create a new class
-  const createClass = async (classData) => {
+  const addClass = async (classData) => {
     try {
-      const response = await axios.post(`${API_URL}/class`, classData);
+      const response = await axios.post(`${API_URL}/class`, classData, {
+        headers:{
+            Authorization:`Bearer ${sessionStorage.getItem('authToken')}`,
+            "Content-Type":"Application/json"
+        }
+      });
       setClasses([...classes, response.data]);
       return response.data;
     } catch (error) {
@@ -62,25 +68,97 @@ export const ClassProvider = ({ children }) => {
   // update class details
   const updateClass = async (classId, updatedData) => {
     try {
-      const response = await axios.patch(`${API_URL}/class/${classId}`, updatedData);
-      setClasses(classes.map((cls) => (cls.id === classId ? response.data : cls)));
-      return response.data;
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        icon: 'warning',
+        title: 'Do you want to save the changes?',
+        text: 'Class Details will be updated!',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, update it!',
+      });
+  
+      if (result.isConfirmed) {
+        // User clicked "Yes, update it!"
+        const response = await axios.patch(`${API_URL}/class/${classId}`, updatedData, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+            "Content-Type": "Application/json",
+          },
+        });
+  
+        setClasses(classes.map((cls) => (cls.id === classId ? response.data : cls)));
+  
+        // Show success alert
+        Swal.fire({
+          icon: 'success',
+          title: 'Class Updated',
+          text: 'The class details have been updated successfully!',
+        });
+  
+        return response.data;
+      }
     } catch (error) {
       setError('Error updating class details');
+  
+      // Show error alert
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'There was an error updating the class details. Please try again.',
+      });
+  
       throw error;
     }
   };
+  
 
   // delete a class
   const deleteClass = async (classId) => {
     try {
-      await axios.delete(`${API_URL}/class/${classId}`);
-      setClasses(classes.filter((cls) => cls.id !== classId));
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        icon: 'warning',
+        title: 'Are you sure?',
+        text: 'You are about to delete this class. This action cannot be undone!',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+      });
+  
+      if (result.isConfirmed) {
+        // User clicked "Yes, delete it!"
+        await axios.delete(`${API_URL}/class/${classId}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+            "Content-Type": "Application/json",
+          },
+        });
+  
+        setClasses(classes.filter((cls) => cls.id !== classId));
+  
+        // Show success alert
+        Swal.fire({
+          icon: 'success',
+          title: 'Class Deleted',
+          text: 'The class has been deleted successfully!',
+        });
+      }
     } catch (error) {
       setError('Error deleting class');
+  
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'There was an error deleting the class. Please try again.',
+      });
+  
       throw error;
     }
   };
+  
 
   // add student(s) to a class   
   const addStudentToClass = async (classId, userId) => {
@@ -127,9 +205,9 @@ export const ClassProvider = ({ children }) => {
         loading,
         error,
         // fetchClasses,
-        fetchClassDetails,
+        // fetchClassDetails,
         fetchClassStudents,
-        createClass,
+        addClass,
         updateClass,
         deleteClass,
         addStudentToClass,
