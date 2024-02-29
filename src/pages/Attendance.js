@@ -1,6 +1,5 @@
 import React from 'react'
 import close from '../assets/images/close.svg'
-import { Button } from 'flowbite-react';
 
 
 function Attendance({setShowForm, handleClose}) {

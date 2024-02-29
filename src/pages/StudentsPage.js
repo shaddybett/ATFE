@@ -1,17 +1,77 @@
-import React, { useState } from "react";
-import { Table } from "flowbite-react";
-import CreateStudent from "./CreateStudent";
-import Nav from "../components/Nav";
-import EditStudent from "./EditStudent"
+import React, { useContext, useEffect, useState } from 'react'
+import { Table } from 'flowbite-react'
+import CreateStudent from './CreateStudent'
+import Nav from '../components/Nav'
+import Loading from '../components/Loading'
+import EditStudent from './EditStudent'
+import { UserContext } from '../context/UserContext'
+// import search from '../assets/images/search.svg'
+import Swal from 'sweetalert2'
 
 function StudentsPage() {
-  const [showForm, setShowForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [showForm, setShowForm] = useState(false)
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [studentsCopy, setStudentsCopy] = useState([])
+  const { onchange, apiEndpoint, deleteUser, loading, setLoading } =
+    useContext(UserContext)
+  const [selectedStudent, setSelectedStudent] = useState({})
+  const [students, setStudents] = useState([])
+
+  useEffect(() => {
+    setLoading(true)
+    fetch(`${apiEndpoint}/students`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setStudents(data)
+        setStudentsCopy(data)
+        setLoading(false)
+      })
+  }, [apiEndpoint, onchange, setLoading])
+
   function handleClick() {
-    setShowForm(!showForm);
+    setShowForm(!showForm)
   }
-  function handleEdit() {
-    setShowEditForm(!showEditForm);
+
+  function handleEdit(student) {
+    setShowEditForm(!showEditForm)
+    setSelectedStudent(student)
+  }
+
+  function handleSearch(e) {
+    const filteredStudents = students.filter((student) => {
+      const searchValue = e.currentTarget.value.toLowerCase()
+      return (
+        student.email.toLowerCase().includes(searchValue) ||
+        student.first_name.toLowerCase().includes(searchValue) ||
+        student.last_name.toLowerCase().includes(searchValue)
+      )
+    })
+    setStudentsCopy(filteredStudents)
+  }
+
+  function handleDelete(id) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: 'gray',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true)
+        deleteUser(id)
+        const newList = students.filter((student) => student.student_id !== id)
+        setStudents(newList)
+        setStudentsCopy(newList)
+      }
+    })
   }
 
   return (
@@ -19,7 +79,15 @@ function StudentsPage() {
       {showForm && (
         <CreateStudent handleClick={handleClick} setShowForm={setShowForm} />
       )}
-      {showEditForm  && <EditStudent handleEdit={handleEdit} setShowEditForm={setShowEditForm}/>}
+      {loading && <Loading />}
+      {showEditForm && (
+        <EditStudent
+          handleEdit={handleEdit}
+          setShowEditForm={setShowEditForm}
+          selectedStudent={selectedStudent}
+          setSelectedStudent={setSelectedStudent}
+        />
+      )}
 
       <Nav />
       <main className="container">
@@ -32,30 +100,11 @@ function StudentsPage() {
                 id="search"
                 type="text"
                 required
+                onChange={handleSearch}
                 placeholder="Search"
               />
-              <label aria-label="search" htmlFor="search" className="btn py-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
-                  viewBox="0 0 512 512"
-                >
-                  <path
-                    d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeMiterlimit="10"
-                    strokeWidth="32"
-                  />
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeMiterlimit="10"
-                    strokeWidth="32"
-                    d="M338.29 338.29L448 448"
-                  />
-                </svg>
+              <label aria-label="search" htmlFor="search" >
+                {/* <img className="w-6 h-6 object-cover" src={search} alt="" /> */}
               </label>
             </div>
             <button onClick={handleClick} className="btn min-w-fit py-2">
@@ -72,7 +121,6 @@ function StudentsPage() {
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Course</Table.HeadCell>
               <Table.HeadCell>Phone Number</Table.HeadCell>
-              
 
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
@@ -82,62 +130,43 @@ function StudentsPage() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  54215
-                </Table.Cell>
-                <Table.Cell>Mike</Table.Cell>
-                <Table.Cell>Scott</Table.Cell>
-                <Table.Cell>examle@gmail.com</Table.Cell>
-                <Table.Cell>IT</Table.Cell>
-                <Table.Cell>+25684855</Table.Cell>
-                <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">Download Report</Table.Cell>
-                <Table.Cell>
-                  <span onClick={handleEdit}
-                    className="font-medium text-m-orange hover:underline cursor-pointer">
-                    Edit
-                  </span>
-                </Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="/students"
-                    className="font-medium text-m-orange hover:underline"
-                  >
-                    Delete
-                  </a>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row className="bg-white">
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  54215
-                </Table.Cell>
-                <Table.Cell>Mike</Table.Cell>
-                <Table.Cell>Scott</Table.Cell>
-                <Table.Cell>examle@gmail.com</Table.Cell>
-                <Table.Cell>IT</Table.Cell>
-                <Table.Cell>+25684855</Table.Cell>
-                <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">Download Report</Table.Cell>
-                <Table.Cell>
-                  <span onClick={handleEdit}
-                    className="font-medium text-m-orange hover:underline cursor-pointer">
-                    Edit
-                  </span>
-                </Table.Cell>
-                <Table.Cell>
-                  <a
-                    href="/students"
-                    className="font-medium text-m-orange hover:underline"
-                  >
-                    Delete
-                  </a>
-                </Table.Cell>
-              </Table.Row>
+              {studentsCopy?.map((student) => {
+                return (
+                  <Table.Row key={student.student_id} className="bg-white">
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {student.student_id}
+                    </Table.Cell>
+                    <Table.Cell>{student.first_name}</Table.Cell>
+                    <Table.Cell>{student.last_name}</Table.Cell>
+                    <Table.Cell>{student.email}</Table.Cell>
+                    <Table.Cell>{student.course}</Table.Cell>
+                    <Table.Cell>{student.phone_number}</Table.Cell>
+                    <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">
+                      Download Report
+                    </Table.Cell>
+                    <Table.Cell>
+                      <span
+                        onClick={() => handleEdit(student)}
+                        className="font-medium text-m-orange hover:underline cursor-pointer">
+                        Edit
+                      </span>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <span
+                        onClick={() => handleDelete(student.student_id)}
+                        className="font-medium text-m-orange hover:underline cursor-pointer">
+                        Delete
+                      </span>
+                    </Table.Cell>
+                  </Table.Row>
+                )
+              })}
             </Table.Body>
           </Table>
         </div>
       </main>
     </div>
-  );
+  )
 }
 
-export default StudentsPage;
+export default StudentsPage

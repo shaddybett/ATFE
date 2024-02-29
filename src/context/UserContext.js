@@ -7,6 +7,7 @@ export const UserContext = createContext()
 
 export default function UserProvider({ children }) {
   const [onchange, setOnchange] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [authToken, setAuthToken] = useState(() =>
     sessionStorage.getItem('authToken')
       ? sessionStorage.getItem('authToken')
@@ -106,23 +107,42 @@ export default function UserProvider({ children }) {
   }, [authToken, onchange])
 
   // update user profile
-  async function updateProfile(user) {
+  async function updateProfile(user, id) {
+    setLoading(true)
     try {
-      const resp = await axios.patch(
-        `${apiEndpoint}/update/${currentUser.user_id}`,
-        user,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      )
+      const resp = await axios.patch(`${apiEndpoint}/update/${id}`, user, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+        },
+      })
+      console.log(resp.status);
+      setLoading(false)
       setOnchange(!onchange)
       Swal.fire('Success', 'Profile updated successfully', 'success')
-      navigate('/profile')
     } catch (error) {
-      console.log(error.response.data.error)
+      Swal.fire({
+        icon: 'error',
+        text: error.response.data.error,
+      })
+    }
+  }
+
+  // Delete user
+  async function deleteUser(id) {
+    try {
+      const resp = await axios.delete(`${apiEndpoint}/delete-user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+        },
+      })
+      Swal.fire({
+        title: 'Deleted!',
+        text: resp.data.message,
+        icon: 'success',
+      })
+      setLoading(false)
+    } catch (error) {
       Swal.fire({
         icon: 'error',
         text: error.response.data.error,
@@ -140,6 +160,9 @@ export default function UserProvider({ children }) {
     updateProfile,
     onchange,
     setOnchange,
+    deleteUser,
+    loading,
+    setLoading
   }
 
   return (
