@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { UserContext } from './UserContext';
-import { json } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 
@@ -12,7 +10,7 @@ const API_URL = 'http://127.0.0.1:5000';
 
 export const ClassProvider = ({ children }) => {
   const [classes, setClasses] = useState([]);
-  const [classDetails, setClassDetails] = useState({});
+  const [classDetails] = useState({});
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

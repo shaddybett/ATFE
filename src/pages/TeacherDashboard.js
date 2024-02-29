@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Nav from '../components/Nav';
 import grad from '../assets/images/grad.svg';
 import chevRight from '../assets/images/chevron-forward-outline.svg';
@@ -12,7 +12,7 @@ import EditClass from './EditClass';
 import { useClassContext } from '../context/ClassContext';
 
 function TeacherDashboard() {
-  const { classes, fetchClassDetails, updateClass, deleteClass } = useClassContext();
+  const { classes, deleteClass } = useClassContext();
   const [hoveredCard, setHoveredCard] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [showEditClassForm, setShowEditClassForm] = useState(false);

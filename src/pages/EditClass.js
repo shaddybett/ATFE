@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import close from '../assets/images/close.svg';
 import { useClassContext } from '../context/ClassContext';
 
 function EditClass({ setShowEditClassForm, handleEditClass, selectedClass }) {
-  const { fetchClassDetails, updateClass, classDetails } = useClassContext();
+  const { updateClass} = useClassContext();
 
   const handleChange = (e) => {
     // setFormData({ ...formData, [e.target.id]: e.target.value });

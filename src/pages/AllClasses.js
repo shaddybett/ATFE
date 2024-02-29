@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Table } from "flowbite-react";
 import CreateStudent from "./CreateStudent";
 import Nav from "../components/Nav";
-import { useClassContext } from '../context/ClassContext'
 
 function AllClasses() {
   const [showForm, setShowForm] = useState(false);
