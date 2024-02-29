@@ -7,6 +7,7 @@ import people from '../assets/images/people-sharp.svg'
 import download from '../assets/images/download.svg'
 import { Table } from 'flowbite-react'
 
+
 function ClassDetail() {
   return (
     <div>
