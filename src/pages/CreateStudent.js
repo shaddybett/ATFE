@@ -1,19 +1,75 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import upload from '../assets/images/upload.svg'
 import close from '../assets/images/close.svg'
-
+import Swal from 'sweetalert2'
+import { UserContext } from '../context/UserContext'
+import axios from 'axios'
 
 function CreateStudent({ setShowForm, handleClick }) {
+    const {createUser,apiEndpoint, loading,onchange, setOnchange, setLoading} = useContext(UserContext)
 
   function handleSubmit(e) {
     e.preventDefault()
-  }
-  function handleUpload(e) {
-    e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    console.log(Object.fromEntries(formData))
-    fetch()
+    const user = Object.fromEntries(formData)
+
+    for (const [el, elTwo] of [...formData.entries()]) {
+      if (elTwo.trim() === '') {
+        Swal.fire({
+          icon: 'error',
+          text: 'Fill in all the fields',
+        })
+        console.log(el)
+        return
+      }
+    }
+    user['role_id'] = 3
+    createUser(user, 'add-student')
   }
+
+  async function handleUpload(e) {
+    e.preventDefault()
+    setLoading(true)
+    const formData = new FormData(e.currentTarget)
+    const file = Object.fromEntries(formData)
+
+    try {
+      const authToken = sessionStorage.getItem('authToken')
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: formData,
+      }
+
+      const response = await fetch(
+        `${apiEndpoint}/upload_students`,
+        requestOptions
+      )
+      const responseData = await response.json()
+
+      setLoading(false)
+      setOnchange(!onchange)
+
+      if (response.ok) {
+        Swal.fire({
+          title: 'Upload Successful!',
+          text: `${responseData.msg}, ${responseData.emails_in_use? responseData.emails_in_use.join('|') + ' already in use': ''}`,
+          icon: 'info',
+        })
+      } else {
+        throw new Error(responseData.error || 'Upload failed')
+      }
+    } catch (error) {
+      setLoading(false)
+      Swal.fire({
+        icon: 'error',
+        text: error?.message,
+      })
+    }
+  }
+
   return (
     <div className="add-student-over">
       <div className="flex flex-col gap-4">
@@ -36,13 +92,25 @@ function CreateStudent({ setShowForm, handleClick }) {
               <div className="mb-2 block">
                 <label htmlFor="first_name">First Name</label>
               </div>
-              <input className="input" id="first-name" type="text" required />
+              <input
+                className="input"
+                id="first_name"
+                name="first_name"
+                type="text"
+                required
+              />
             </div>
             <div className="w-full">
               <div className="mb-2 block">
                 <label htmlFor="last_name">Last Name</label>
               </div>
-              <input className="input" id="last-name" type="text" required />
+              <input
+                className="input"
+                id="last_name"
+                name="last_name"
+                type="text"
+                required
+              />
             </div>
           </div>
           <div className="form-row">
@@ -53,6 +121,7 @@ function CreateStudent({ setShowForm, handleClick }) {
               <input
                 className="input"
                 id="email"
+                name="email"
                 type="email"
                 placeholder="name@flowbite.com"
                 required
@@ -62,7 +131,13 @@ function CreateStudent({ setShowForm, handleClick }) {
               <div className="mb-2 block">
                 <label htmlFor="phone_number">Phone Number</label>
               </div>
-              <input className="input" id="phone_number" type="text" required />
+              <input
+                className="input"
+                id="phone_number"
+                name="phone_number"
+                type="text"
+                required
+              />
             </div>
           </div>
           <div className="form-row">
@@ -70,7 +145,13 @@ function CreateStudent({ setShowForm, handleClick }) {
               <div className="mb-2 block">
                 <label htmlFor="course">Course</label>
               </div>
-              <input className="input" id="course" type="text" required />
+              <input
+                className="input"
+                id="course"
+                name="course"
+                type="text"
+                required
+              />
             </div>
           </div>
           <button className="btn py-3 my-3" type="submit">

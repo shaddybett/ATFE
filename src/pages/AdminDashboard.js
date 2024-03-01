@@ -67,10 +67,11 @@ function AdminDashboard() {
         confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
         if (result.isConfirmed) {
-        deleteUser(id)
-        const newList = teachers.filter((teacher) => teacher.teacher_id !== id)
-        setTeachers(newList)
-        setTeachersCopy(newList)
+            setLoading(true)
+            deleteUser(id)
+            const newList = teachers.filter((teacher) => teacher.teacher_id !== id)
+            setTeachers(newList)
+            setTeachersCopy(newList)
         }
     })
     }
@@ -79,7 +80,7 @@ function AdminDashboard() {
     }
 
     return (
-      <div>
+      <div className={(loading || showForm) ? 'overflow-hidden h-full max-h-[100vh]' :''}>
         {showForm && (
           <CreateTeacher handleClick={handleClick} setShowForm={setShowForm} />
         )}

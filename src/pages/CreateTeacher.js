@@ -1,13 +1,33 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import close from '../assets/images/close.svg'
+import { UserContext } from '../context/UserContext'
+import Swal from 'sweetalert2'
+import Loading from '../components/Loading'
 
+function CreateTeacher({ setShowForm, handleClick }) {
+  const { createUser, loading } = useContext(UserContext)
 
-function CreateTeacher({setShowForm, handleClick}) {
-    function handleSubmit(e){
-        e.preventDefault()
+  function handleSubmit(e) {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const user = Object.fromEntries(formData)
+
+    for (const [el, elTwo] of [...formData.entries()]){
+        if(elTwo.trim() === ''){
+            Swal.fire({
+            icon: 'error',
+            text: 'Fill in all the fields',
+            })
+            console.log(el);
+            return
+        }
     }
+    user['role_id'] = 2
+    createUser(user, 'add-teacher')
+  }
   return (
     <div className="add-teacher-over">
+      {loading && <Loading />}
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col justify-center gap-4 max-w-md md:max-w-3xl">
@@ -27,13 +47,25 @@ function CreateTeacher({setShowForm, handleClick}) {
             <div className="mb-2 block">
               <label htmlFor="first_name">First Name</label>
             </div>
-            <input className="input" id="first-name" type="text" required />
+            <input
+              className="input"
+              id="first_name"
+              name="first_name"
+              type="text"
+              required
+            />
           </div>
           <div className="w-full">
             <div className="mb-2 block">
               <label htmlFor="last_name">Last Name</label>
             </div>
-            <input className="input" id="last-name" type="text" required />
+            <input
+              className="input"
+              id="last_name"
+              name="last_name"
+              type="text"
+              required
+            />
           </div>
         </div>
         <div className="form-row">
@@ -44,6 +76,7 @@ function CreateTeacher({setShowForm, handleClick}) {
             <input
               className="input"
               id="email"
+              name="email"
               type="email"
               placeholder="name@flowbite.com"
               required
@@ -53,7 +86,13 @@ function CreateTeacher({setShowForm, handleClick}) {
             <div className="mb-2 block">
               <label htmlFor="phone_number">Phone Number</label>
             </div>
-            <input className="input" id="phone_number" type="text" required />
+            <input
+              className="input"
+              id="phone_number"
+              name="phone_number"
+              type="text"
+              required
+            />
           </div>
         </div>
         <div className="form-row">
@@ -61,7 +100,13 @@ function CreateTeacher({setShowForm, handleClick}) {
             <div className="mb-2 block">
               <label htmlFor="department">Department</label>
             </div>
-            <input className="input" id="department" type="text" required />
+            <input
+              className="input"
+              id="department"
+              name="department"
+              type="text"
+              required
+            />
           </div>
         </div>
 

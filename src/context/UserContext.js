@@ -21,6 +21,7 @@ export default function UserProvider({ children }) {
 
   //   Login User
   function login(email, password) {
+    setLoading(true)
     fetch(`${apiEndpoint}/login`, {
       method: 'POST',
       headers: {
@@ -33,6 +34,7 @@ export default function UserProvider({ children }) {
         if (response.access_token) {
           sessionStorage.setItem('authToken', response.access_token)
           setAuthToken(response.authToken)
+          setLoading(false)
           Swal.fire({
             position: 'center',
             icon: 'success',
@@ -44,6 +46,7 @@ export default function UserProvider({ children }) {
           getAuthenticatedUser()
           navigate(`/${response.role}`)
         } else {
+          setLoading(false)
           Swal.fire({
             icon: 'error',
             text: response.error,
@@ -121,31 +124,59 @@ export default function UserProvider({ children }) {
       setOnchange(!onchange)
       Swal.fire('Success', 'Profile updated successfully', 'success')
     } catch (error) {
+      setLoading(false)
       Swal.fire({
         icon: 'error',
-        text: error.response.data.error,
+        text: error?.response?.data?.error,
       })
     }
   }
 
+  // Add user
+  async function createUser(user, path){
+    setLoading(true)
+    try {
+        const resp = await axios.post(`${apiEndpoint}/${path}`,user, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+          },
+        })
+        setLoading(false)
+        setOnchange(!onchange)
+        Swal.fire({
+            title: 'Success!',
+            text: resp.data.message,
+            icon: 'success',
+        })
+    } catch (error) {
+        setLoading(false)
+        Swal.fire({
+          icon: 'error',
+          text: error?.response?.data?.error,
+        })
+    }
+  }   
+
   // Delete user
   async function deleteUser(id) {
+    setLoading(true)
     try {
-      const resp = await axios.delete(`${apiEndpoint}/delete-user/${id}`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
-        },
-      })
-      Swal.fire({
-        title: 'Deleted!',
-        text: resp.data.message,
-        icon: 'success',
-      })
-      setLoading(false)
+        const resp = await axios.delete(`${apiEndpoint}/delete-user/${id}`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+            },
+        })
+        Swal.fire({
+            title: 'Deleted!',
+            text: resp.data.message,
+            icon: 'success',
+        })
+        setLoading(false)
     } catch (error) {
+        setLoading(true)
       Swal.fire({
         icon: 'error',
-        text: error.response.data.error,
+        text: error?.response?.data?.error,
       })
     }
   }
@@ -162,7 +193,8 @@ export default function UserProvider({ children }) {
     setOnchange,
     deleteUser,
     loading,
-    setLoading
+    setLoading,
+    createUser
   }
 
   return (

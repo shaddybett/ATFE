@@ -75,7 +75,10 @@ function StudentsPage() {
   }
 
   return (
-    <div>
+    <div
+      className={
+        loading || showForm ? 'overflow-hidden h-full max-h-[100vh]' : ''
+      }>
       {showForm && (
         <CreateStudent handleClick={handleClick} setShowForm={setShowForm} />
       )}
@@ -103,7 +106,7 @@ function StudentsPage() {
                 onChange={handleSearch}
                 placeholder="Search"
               />
-              <label aria-label="search" htmlFor="search" >
+              <label aria-label="search" htmlFor="search">
                 {/* <img className="w-6 h-6 object-cover" src={search} alt="" /> */}
               </label>
             </div>
