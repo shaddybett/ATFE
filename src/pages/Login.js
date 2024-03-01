@@ -3,9 +3,10 @@ import lock from '../assets/images/lock.svg'
 import { Label } from 'flowbite-react'
 import { UserContext } from '../context/UserContext'
 import Swal from 'sweetalert2'
+import Loading from '../components/Loading'
 
 function Login() {
-    const {login} = useContext(UserContext)
+    const {login, loading} = useContext(UserContext)
 
     function handleSubmit(e){
         e.preventDefault()
@@ -26,6 +27,7 @@ function Login() {
 
   return (
     <div className="login-container">
+      {loading && <Loading />}
       <div className="form-container">
         <div>
           <h2 className="text-3xl font-semibold text-center md:text-left">
@@ -35,7 +37,9 @@ function Login() {
             <img className="mx-auto" src={lock} alt="illustration" />
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="flex w-full flex-col justify-center gap-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col justify-center gap-4">
           <h3 className="text-xl font-semibold text-center">Login</h3>
           <div>
             <div className="mb-2 block">
@@ -45,8 +49,8 @@ function Login() {
               className="input"
               id="email"
               type="email"
-              name='email'
-              autoComplete='on'
+              name="email"
+              autoComplete="on"
               placeholder="name@flowbite.com"
               required
             />
@@ -55,7 +59,15 @@ function Login() {
             <div className="mb-2 block">
               <Label htmlFor="password" value="Your password" />
             </div>
-            <input className="input" id="password" name="password" placeholder="*********" type="password" autoComplete="current-password" required />
+            <input
+              className="input"
+              id="password"
+              name="password"
+              placeholder="*********"
+              type="password"
+              autoComplete="current-password"
+              required
+            />
           </div>
           <button className="btn py-3" type="submit">
             Sign In

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Nav from '../components/Nav';
 import grad from '../assets/images/grad.svg';
 import chevRight from '../assets/images/chevron-forward-outline.svg';
@@ -10,6 +10,7 @@ import { ListGroup } from 'flowbite-react';
 import CreateClass from './CreateClass';
 import EditClass from './EditClass';
 import { useClassContext } from '../context/ClassContext';
+import { UserContext } from '../context/UserContext';
 
 function TeacherDashboard() {
   const { classes, deleteClass } = useClassContext();
@@ -17,6 +18,7 @@ function TeacherDashboard() {
   const [showForm, setShowForm] = useState(false);
   const [showEditClassForm, setShowEditClassForm] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
+  const {loading} = useContext(UserContext)
 
   const handleEditClass = (currentClass) => {
     // Open the edit class form and set the selected class
@@ -39,7 +41,7 @@ function TeacherDashboard() {
   };
 
   return (
-    <div>
+    <div className={(loading || showForm) ? 'overflow-hidden h-full max-h-[100vh]' :''}>
       <Nav />
       {showForm && <CreateClass handleClose={() => setShowForm(false)} setShowForm={setShowForm} />}
 
@@ -69,45 +71,46 @@ function TeacherDashboard() {
             + New
           </button>
         </div>
-      <Link to="/class" >
         <div className="flex flex-col gap-6 py-6">
           {classes.map((classData, index) => (
               <div
-                key={classData.id}
-                className="class-card relative flex justify-between gap-6 items-end w-full max-w-xl bg-light-orange hover:bg-t-orange transition px-4 pt-10 pb-2 rounded-lg"
-              >
-                <div>
-                  <h4 className="font-semibold text-2xl">{classData.class_name}</h4>
-                  <p>
-                    {classData.start_time} - {classData.end_time}
-                  </p>
-                </div>
-                <div>
-                  <span className="block font-bold text-m-orange">{classData.students.length}</span>
-                  <span>Students</span>
-                </div>
-                <button
-                  className="absolute z-40 top-4 right-4 p-1 border border-transparent hover:border-orange-300 rounded-full transition"
-                  aria-label="class options"
-                  onClick={() => handleClick(index)}
-                >
-                  <img className="w-4 h-4" src={ellipsis} alt="icon" />
-                </button>
-                <ListGroup className={`list-group ${hoveredCard === index ? 'opacity-100' : 'opacity-0'}`}>
-                  <ListGroup.Item onClick={() => handleEditClass(classData)}>
-                    <img src={pencil} alt="icon" className="w-3 h-3 mr-2" />
-                    Edit
-                  </ListGroup.Item>
-                  <ListGroup.Item onClick={() => handleDeleteClass(classData.id)}>
-                    <img src={trash} alt="icon" className="w-3 h-3 mr-2" />
-                    Delete
-                  </ListGroup.Item>
-                </ListGroup>
-              </div>
+                    key={classData.id}
+                    className="class-card relative flex justify-between gap-6 items-end w-full max-w-xl bg-light-orange hover:bg-t-orange transition px-4 pt-10 pb-2 rounded-lg"
+                  >
+                    <div>
+                    <Link to={`/class/${classData.id}`}>
+                      <h4 className="font-semibold text-2xl">{classData.class_name}</h4>
+                      <p>
+                        {classData.start_time} - {classData.end_time}
+                      </p>
+                        </Link>
+
+                    </div>
+                    <div>
+                      <span className="block font-bold text-m-orange">{classData.students.length}</span>
+                      <span>Students</span>
+                    </div>
+                    <button
+                      className="absolute z-50 top-4 right-4 p-1 border border-transparent hover:border-orange-300 rounded-full transition"
+                      aria-label="class options"
+                      onClick={() => handleClick(index)}
+                    >
+                      <img className="w-4 h-4" src={ellipsis} alt="icon" />
+                    </button>
+                    <ListGroup className={`list-group ${hoveredCard === index ? 'opacity-100' : 'opacity-0'}`}>
+                      <ListGroup.Item onClick={() => handleEditClass(classData)}>
+                        <img src={pencil} alt="icon" className="w-3 h-3 mr-2" />
+                        Edit
+                      </ListGroup.Item>
+                      <ListGroup.Item onClick={() => handleDeleteClass(classData.id)}>
+                        <img src={trash} alt="icon" className="w-3 h-3 mr-2" />
+                        Delete
+                      </ListGroup.Item>
+                    </ListGroup>
+                  </div>
             
           ))}
         </div>
-      </Link>
       </section>
     </div>
   );
