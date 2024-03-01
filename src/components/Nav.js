@@ -2,6 +2,7 @@ import {useContext} from 'react'
 import { Navbar, Dropdown } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
+import logoImage from '../assets/images/moringalogo.png'
 
 function Nav() {
     const {logout, currentUser, apiEndpoint} = useContext(UserContext)
@@ -9,10 +10,13 @@ function Nav() {
   return (
     <header className="shadow-bs-light">
       <Navbar className="-full mx-auto max-w-7xl" fluid rounded>
-        <Navbar.Brand href="https://flowbite-react.com">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            M.A.S
-          </span>
+        <Navbar.Brand className="mr-auto">
+        <img
+        src={logoImage}
+        alt="M.A.S Logo"
+        // className="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+        style={{ maxHeight: '40px' }}
+      />
         </Navbar.Brand>
         <div className="flex md:order-2">
           <Dropdown
@@ -40,7 +44,7 @@ function Nav() {
           </Dropdown>
           <button
             onClick={logout}
-            className="text-blue-800 font-semibold border-l-2 border-neutral-300 pl-2 ml-2">
+            className="text-blue-800 font-semibold border-l-2 border-neutral-300 pl-2 ml-2 font-poppins">
             Logout
           </button>
           {/* <Navbar.Toggle /> */}

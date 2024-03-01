@@ -10,7 +10,7 @@ import { Table } from 'flowbite-react'
 
 function ClassDetail() {
   return (
-    <div>
+    <div className='font-poppins text-navy-blue'>
       <Nav />
       <main className="w-full max-w-7xl mx-auto px-4 py-6 ">
         <h1 className="text-3xl">Programming with python</h1>
@@ -53,7 +53,20 @@ function ClassDetail() {
               <input type="date" className="input max-w-[240px]" />
             </div>
             <div className="flex items-center gap-2">
-              <button className="btn py-2">+ Add student</button>
+            <div className="flex gap-2 items-center">
+              <input
+                className="input "
+                id="search"
+                type="text"
+                required
+                // onChange={handleSearch}
+                placeholder="Search Students"
+              />
+              <label aria-label="search" htmlFor="search" >
+                {/* <img className="w-6 h-6 object-cover" src={search} alt="" /> */}
+              </label>
+            </div>
+              <button className="btn py-2">+Add </button>
               <a className="btn py-2 flex items-center gap-2" href=".">
                 <span>Export</span>
                 <img className="w-5 h-5" src={download} alt="icon" />
@@ -89,6 +102,7 @@ function ClassDetail() {
                     Update
                   </a>
                 </Table.Cell>
+                <Table.Cell className="font-medium text-m-orange hover:underline">Delete</Table.Cell>
               </Table.Row>
               <Table.Row className="bg-white">
                 <Table.Cell>Mike Scott</Table.Cell>
@@ -103,6 +117,7 @@ function ClassDetail() {
                     Update
                   </a>
                 </Table.Cell>
+                <Table.Cell className="font-medium text-m-orange hover:underline">Delete</Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>
