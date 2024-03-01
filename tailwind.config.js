@@ -6,10 +6,16 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'montserrat': ['Montserrat', 'sans-serif',],
+        'poppins': ['Poppins', 'sans-serif'],
+        'nunito': ['Nunito', 'sans-serif'],
+      },
       colors: {
         'm-orange': '#C14618',
         'light-orange': 'rgba(248,85,24,0.1)',
         't-orange': 'rgba(248,85,24,0.2)',
+        'navy-blue': '#001F3F', // Add navy blue to your color palette
         light: 'rgba(21,20,25,0.1)',
       },
       boxShadow: {
@@ -19,4 +25,3 @@ module.exports = {
   },
   plugins: [require('flowbite/plugin')],
 }
-

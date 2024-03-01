@@ -49,9 +49,9 @@ function Login() {
               className="input"
               id="email"
               type="email"
-              name="email"
-              autoComplete="on"
-              placeholder="name@flowbite.com"
+              name='email'
+              autoComplete='on'
+              placeholder="name@example.com"
               required
             />
           </div>
