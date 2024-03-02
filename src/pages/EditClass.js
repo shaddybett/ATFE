@@ -1,9 +1,10 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import close from '../assets/images/close.svg';
-import { useClassContext } from '../context/ClassContext';
+import { ClassContext } from '../context/ClassContext';
+import Loading from '../components/Loading';
 
 function EditClass({ setShowEditClassForm, handleEditClass, selectedClass }) {
-  const { updateClass} = useClassContext();
+  const { updateClass, loading} = useContext(ClassContext)
 
   const handleChange = (e) => {
     // setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -20,6 +21,7 @@ function EditClass({ setShowEditClassForm, handleEditClass, selectedClass }) {
 
   return (
     <div className="add-class-over" id="add-class">
+        {loading && <Loading />}
       <form
         onSubmit={handleSubmit}
         className="flex w-full flex-col justify-center gap-4  "
