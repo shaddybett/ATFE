@@ -31,31 +31,36 @@ function DashboardStudent() {
     fetchData();
   }, [currentUser]); 
 
-  async function handleCheckIn(id){
+  function handleCheckIn(id){
     setLoading(true)
-    try {
-        const resp = await fetch(`${apiEndpoint}/class/${id}/attendance`, {
+    fetch(`${apiEndpoint}/class/${id}/attendance`, {
             method : 'POST',
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
           },
         })
-        setLoading(false)
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Succesfully checked in!',
-          showConfirmButton: false,
-          timer: 1500,
+        .then(res=> {
+            if(res.ok){
+                Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Successfully checked in!',
+                showConfirmButton: false,
+                timer: 1500,
+                })
+            } 
+            setLoading(false)
+            return res.json()
         })
-        setOnchange(!onchange)
-    } catch (error) {
-        setLoading(false)
-        Swal.fire({
-          icon: 'error',
-          text: error,
+        .then(data => {
+            Swal.fire({
+                position: 'center',
+                icon: 'info',
+                title: 'Already checked in!',
+                showConfirmButton: true,
+                timer: 1500,
+            })	
         })
-    }
   }
 
   return (
