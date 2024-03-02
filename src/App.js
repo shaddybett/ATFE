@@ -24,8 +24,7 @@ function App() {
       <UserProvider>
         
         <Routes>
-              <Route path='/' element={<StudentDashboard />}/>
-              <Route path='/login' element={<Login />} />
+              <Route path='/' element={<Login />}/>
               <Route path='/admin' element={<AdminDashboard />} />
               <Route path='/teacher' element={<TeacherDashboard />} />
               <Route path='/students' element={<StudentsPage/>} />
