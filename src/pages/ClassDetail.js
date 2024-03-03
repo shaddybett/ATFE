@@ -9,6 +9,8 @@ import { Table } from 'flowbite-react'
 import { UserContext } from '../context/UserContext'
 import { useParams } from 'react-router-dom'
 import Loading from '../components/Loading'
+import AddToClass from './AddToClass'
+import Swal from 'sweetalert2'
 
 const today = new Date()
 const year = today.getFullYear()
@@ -20,7 +22,8 @@ const formtattedDate = year + '-'+ month + '-' + date
 function ClassDetail() {
     const [details , setDetails] = useState({})
     const [detailsDate, setDetailsDate] = useState(formtattedDate)
-    const {apiEndpoint, loading, setLoading} = useContext(UserContext)
+    const {apiEndpoint, loading, setLoading, onchange, setOnchange} = useContext(UserContext)
+    const [showAddForm, setShowAddForm] = useState(false)
     const {id} = useParams()
     
     useEffect(() => {
@@ -33,7 +36,6 @@ function ClassDetail() {
           },
         });
         const data = await response.json()
-
         setDetails(data);
       } catch (error) {
           console.error("Error fetching data:", error);
@@ -43,15 +45,54 @@ function ClassDetail() {
     };
 
     fetchData();
-  }, [detailsDate, apiEndpoint, id,setLoading]); 
+  }, [detailsDate, apiEndpoint, id,setLoading, onchange]); 
 
   function handleDateChange(e){
     setDetailsDate(e.currentTarget.value)
   }
 
+  function handleClick() {
+    setShowAddForm(!showAddForm)
+  }
+
+  async function handleRemove(student_id){
+    setLoading(true)
+    try {
+        const resp = await fetch(`${apiEndpoint}/class/${id}/student`, {
+            method:'DELETE',
+            headers:{
+                Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({student_id})
+        })
+        const data = await resp.json()
+        if (!resp.ok){
+            Swal.fire({
+                icon: 'error',
+                text: data.error,
+            })
+        } else {
+                Swal.fire({
+                title: 'Success!',
+                text: data.message,
+                icon: 'success',
+            })
+            setOnchange(!onchange)
+        }
+    } catch (error) {
+        console.log(error);
+    } finally{
+        setLoading(false)
+    }
+  }
+
   return (
-    <div className='font-poppins text-navy-blue'>
+    <div className={
+        loading || showAddForm ? 'overflow-hidden h-full max-h-[100vh]' : ''
+      }>
         {loading && <Loading />}
+        {showAddForm && <AddToClass handleClick={handleClick}/>}
       <Nav />
       <main className="w-full max-w-7xl mx-auto px-4 py-6 ">
         <h1 className="text-3xl">{details.class_name}</h1>
@@ -91,23 +132,10 @@ function ClassDetail() {
               <h4 className="font-semibold text-lg text-nowrap">
                 Attendance for {detailsDate === formtattedDate ? 'today' : detailsDate}
               </h4>
-              <input type="date" onChange={handleDateChange} className="input max-w-[240px]" />
+              <input type="date" onChange={handleDateChange} className="input max-w-[240px]" id='att-date' />
             </div>
-            <div className="flex items-center gap-2">
-            <div className="flex gap-2 items-center">
-              <input
-                className="input "
-                id="search"
-                type="text"
-                required
-                // onChange={handleSearch}
-                placeholder="Search Students"
-              />
-              <label aria-label="search" htmlFor="search" >
-                {/* <img className="w-6 h-6 object-cover" src={search} alt="" /> */}
-              </label>
-            </div>
-              <button className="btn py-2">+Add </button>
+            <div className="flex items-center gap-2">       
+              <button className="btn py-2" onClick={handleClick}>+ Add </button>
               <a className="btn py-2 flex items-center gap-2" href={`${apiEndpoint}/download-attendance/${id}/${detailsDate}`}>
                 <span>Export</span>
                 <img className="w-5 h-5" src={download} alt="icon" />
@@ -137,14 +165,16 @@ function ClassDetail() {
                 <Table.Cell>{student.phone_number}</Table.Cell>
                 <Table.Cell>{student.time_in ? student.time_in : '-'}</Table.Cell>
                 <Table.Cell>{student?.attendance_status}</Table.Cell>
-                <Table.Cell>
+                {/* <Table.Cell>
                   <a
                     href="/students"
-                    className="font-medium text-m-orange hover:underline">
+                    className="font-medium text-m-orange hover:text-orange-500">
                     Update
                   </a>
+                </Table.Cell> */}
+                <Table.Cell >
+                    <button className="font-medium text-m-orange hover:text-orange-500" onClick={() => handleRemove(student.id)}>Remove</button>
                 </Table.Cell>
-                <Table.Cell className="font-medium text-m-orange hover:underline">Remove</Table.Cell>
               </Table.Row>
               })}
              
