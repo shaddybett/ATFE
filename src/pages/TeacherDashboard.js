@@ -64,7 +64,7 @@ function TeacherDashboard() {
   };
 
   return (
-    <div className={(loading || showForm) ? 'overflow-hidden h-full max-h-[100vh]' :''}>
+    <div className={(loading || showForm || showEditClassForm) ? 'overflow-hidden h-full max-h-[100vh]' :''}>
         {loading && <Loading />}
       <Nav />
       {showForm && <CreateClass handleClose={() => setShowForm(false)} setShowForm={setShowForm} />}
