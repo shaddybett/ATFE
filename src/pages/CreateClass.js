@@ -4,7 +4,7 @@ import { useClassContext } from '../context/ClassContext';
 import { UserContext } from '../context/UserContext';
 import Swal from 'sweetalert2';
 
-function CreateClass({ setShowForm, handleClose }) {
+function CreateClass({ handleClose }) {
   const { addClass } = useClassContext();
   const [classData, setClassData] = useState({
     class_name: '',
@@ -22,7 +22,7 @@ function CreateClass({ setShowForm, handleClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     classData['user_id']=currentUser.user_id
-    console.log (classData)
+
     try {
       // Send the class data to the backend to create a new class
       await addClass(classData);
