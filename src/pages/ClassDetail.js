@@ -7,7 +7,7 @@ import people from '../assets/images/people-sharp.svg'
 import download from '../assets/images/download.svg'
 import { Table } from 'flowbite-react'
 import { UserContext } from '../context/UserContext'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Loading from '../components/Loading'
 import AddToClass from './AddToClass'
 import Swal from 'sweetalert2'
@@ -95,6 +95,7 @@ function ClassDetail() {
         {showAddForm && <AddToClass handleClick={handleClick}/>}
       <Nav />
       <main className="w-full max-w-7xl mx-auto px-4 py-6 ">
+      <Link to='/teacher' className='inline-block mb-6 px-3 bg-neutral-100 hover:bg-neutral-200 shadow' >Back</Link>
         <h1 className="text-3xl">{details.class_name}</h1>
         <section>
           <div className="flex flex-wrap justify-center sm:justify-start py-8 gap-4">

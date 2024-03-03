@@ -95,7 +95,7 @@ function StudentsPage() {
 
       <Nav />
       <main className="container">
-        <Link onClick={()=>console.log(currentUser.role_id)} to={currentUser?.role_id === 2 ? '/teacher': '/admin'} className='inline-block mt-6 px-3 bg-neutral-100 hover:bg-neutral-200 shadow' >Back</Link>
+        <Link to={currentUser?.role_id === 2 ? '/teacher': '/admin'} className='inline-block mt-6 px-3 bg-neutral-100 hover:bg-neutral-200 shadow' >Back</Link>
         <div className="flex flex-col md:flex-row gap-2 justify-between md:items-center mb-10 mt-8">
           <h3 className="text-2xl font-semibold">Students</h3>
           <div className="flex items-center gap-4">

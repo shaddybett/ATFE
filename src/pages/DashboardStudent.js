@@ -81,19 +81,19 @@ function DashboardStudent() {
                           <h3 className="text-2xl font-medium">
                             {classData?.class_name}
                           </h3>
-                          <h4 className="text-2l ">
+                          <h4 className="text-sm">
                             {classData?.class_start} - {classData?.class_end}{' '}
                           </h4>
                         </div>
                         <div className="text-sm mt-4">
-                          {' '}
+                          
                           <div>
-                            {' '}
-                            <span style={{ color: 'orange', fontSize: '1.3em' }}>
-                              {classData?.days_remaining}
+                            
+                            <span className="text-orange-700">
+                              {classData?.days_remaining > 0? classData?.days_remaining : 0}
                             </span>{' '}
                             Days
-                          </div>{' '}
+                          </div>
                           Remaining
                         </div>
                       </div>
@@ -105,19 +105,20 @@ function DashboardStudent() {
                           <div className="text-lg mr-4">Late</div>
                         </div>
                         <div className="flex justify-between items-center">
-                          <h4 className="text-2l font-medium mr-4">50%</h4>
-                          <h4 className="text-2l font-medium ml-2">
+                          <h4 className="text-xl font-medium mr-4">{((classData?.present_days / (classData?.present_days + classData?.absent_days)) * 100).toFixed(2)}%</h4>
+                          <h4 className="text-xl font-medium ml-2 text-green-600">
                             {classData?.present_days}
                           </h4>
-                          <h4 className="text-2l font-medium mr-2">
+                          <h4 className="text-xl font-medium mr-2 text-rose-800">
                             {classData?.absent_days}
                           </h4>
-                          <h4 className="text-2l font-medium mr-6">
+                          <h4 className="text-xl font-medium mr-6 text-neutral-400">
                             {classData?.late_days}
                           </h4>
                         </div>
                       </div>
                       <button
+                        disabled={classData?.days_remaining > 0? false : true}
                         onClick={() => handleCheckIn(classData.class_id)}
                         className="btn py-2 self-end mr-4">
                         Check in
