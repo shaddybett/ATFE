@@ -80,7 +80,7 @@ function AdminDashboard() {
     }
 
     return (
-      <div className={(loading || showForm) ? 'overflow-hidden h-full max-h-[100vh]' :''}>
+      <div className={(loading || showForm || showEditTeacherForm) ? 'overflow-hidden h-full max-h-[100vh]' :''}>
         {showForm && (
           <CreateTeacher handleClick={handleClick} setShowForm={setShowForm} />
         )}
@@ -94,12 +94,39 @@ function AdminDashboard() {
         )}
         <Nav />
         <main className="container">
-          <div className="flex gap-4 my-14">
+          <div className="cards-container">
             <Link to="/students" className="block w-full max-w-[350px]">
-              <div className="flex gap-4 items-center px-4 pb-4 pt-14 rounded-lg bg-light-orange hover:bg-t-orange transition">
-                <img className="w-12 h-12" src={grad} alt="icon" />
+              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+                <img className="w-12 " src={grad} alt="icon" />
                 <div className="flex justify-between w-full items-end">
-                  <h3 className="text-4xl font-medium">Students</h3>
+                  <h3 className="text-3xl font-medium">Students</h3>
+                  <img className="w-7 h-7" src={chevRight} alt="icon" />
+                </div>
+              </div>
+            </Link>
+            <Link to="." className="block w-full max-w-[350px]">
+              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+                {/* <img className="w-12 h-12" src={grad} alt="icon" /> */}
+                <div className="flex justify-between w-full items-end">
+                  <h3 className="text-3xl font-medium">Departments</h3>
+                  <img className="w-7 h-7" src={chevRight} alt="icon" />
+                </div>
+              </div>
+            </Link>
+            <Link to="." className="block w-full max-w-[350px]">
+              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+                {/* <img className="w-12 h-12" src={grad} alt="icon" /> */}
+                <div className="flex justify-between w-full items-end">
+                  <h3 className="text-3xl font-medium">Courses</h3>
+                  <img className="w-7 h-7" src={chevRight} alt="icon" />
+                </div>
+              </div>
+            </Link>
+            <Link to="." className="block w-full max-w-[350px]">
+              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+                {/* <img className="w-12 h-12" src={grad} alt="icon" /> */}
+                <div className="flex justify-between w-full items-end">
+                  <h3 className="text-3xl font-medium">Roles</h3>
                   <img className="w-7 h-7" src={chevRight} alt="icon" />
                 </div>
               </div>
@@ -130,8 +157,7 @@ function AdminDashboard() {
             <Table striped>
               <Table.Head>
                 <Table.HeadCell>ID</Table.HeadCell>
-                <Table.HeadCell>First Name</Table.HeadCell>
-                <Table.HeadCell>Last Name</Table.HeadCell>
+                <Table.HeadCell>Name</Table.HeadCell>
                 <Table.HeadCell>Email</Table.HeadCell>
                 <Table.HeadCell>Department</Table.HeadCell>
                 <Table.HeadCell>Phone Number</Table.HeadCell>
@@ -149,8 +175,7 @@ function AdminDashboard() {
                       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                         {teacher.teacher_id}
                       </Table.Cell>
-                      <Table.Cell>{teacher.first_name}</Table.Cell>
-                      <Table.Cell>{teacher.last_name}</Table.Cell>
+                      <Table.Cell>{teacher.first_name} {teacher.last_name}</Table.Cell>
                       <Table.Cell>{teacher.email}</Table.Cell>
                       <Table.Cell>{teacher.department}</Table.Cell>
                       <Table.Cell>{teacher.phone_number}</Table.Cell>

@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import StudentDashboard from './pages/StudentDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import StudentsPage from './pages/StudentsPage'
 import Login from './pages/Login'
@@ -10,7 +9,7 @@ import EditStudent from './pages/EditStudent'
 import UserProfile from './pages/UserProfile'
 import AllClasses from './pages/AllClasses'
 import UpdateUserProfile from './pages/UpdateUserProfile'
-import DashboardStudent from './pages/DashboardStudent'
+import StudentDashboard from './pages/StudentDashboard'
 import EditClass from './pages/EditClass'
 import Attendance from './pages/Attendance'
 import { ClassProvider } from './context/ClassContext';
@@ -24,8 +23,7 @@ function App() {
       <UserProvider>
         
         <Routes>
-              <Route path='/' element={<StudentDashboard />}/>
-              <Route path='/login' element={<Login />} />
+              <Route path='/' element={<Login />}/>
               <Route path='/admin' element={<AdminDashboard />} />
               <Route path='/teacher' element={<TeacherDashboard />} />
               <Route path='/students' element={<StudentsPage/>} />
@@ -37,7 +35,7 @@ function App() {
               <Route path='/allclasses' element={<AllClasses/>}/>
               <Route path='/attendance' element={<Attendance/>}/>
               <Route path='/updateuserprofile' element={<UpdateUserProfile/>}/>
-              <Route path='/student' element={<DashboardStudent/>}/>
+              <Route path='/student' element={<StudentDashboard/>}/>
           </Routes>
 
       </UserProvider>

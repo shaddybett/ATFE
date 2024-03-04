@@ -14,29 +14,32 @@
 .input {
     @apply px-4 py-3 w-full rounded-lg border-neutral-300 focus:ring-orange-400 focus:border-orange-400 focus:outline-none
 }
-#search{
+#search, #att-date{
     @apply py-2
 }
 .btn{
-    @apply px-4 rounded-lg text-white bg-m-orange hover:bg-orange-600
+    @apply px-4 rounded-lg text-white bg-m-orange hover:bg-orange-600 disabled:bg-neutral-400 disabled:cursor-not-allowed
 }
 
 .container{
     @apply w-full max-w-7xl mx-auto px-4
 }
 
-.add-teacher-over, .add-student-over, .add-class-over {
+.add-teacher-over, .add-student-over, .add-class-over, .add-to-class-over{
     @apply absolute top-0 left-0 h-full min-h-full w-full z-50 bg-light flex justify-center items-center px-4 py-6
 }
 
-.add-teacher-over form, .add-student-over > div,  .add-class-over form{
-    @apply w-full max-w-[480px] md:max-w-3xl bg-white px-4 sm:px-8 md:px-16 py-20 rounded-3xl shadow-bs-light
+.add-teacher-over form, .add-student-over > div,  .add-class-over form, .add-to-class-over > div{
+    @apply w-full max-w-[480px] md:max-w-2xl bg-white px-4 sm:px-8 md:px-10 py-20 rounded-3xl shadow-bs-light
 }
 
 #add-class form{
     @apply md:max-w-xl
 }
 
+#add-to-class > div{
+    @apply md:max-w-md mx-auto
+}
 .form-row{
     @apply flex flex-col md:flex-row gap-4 md:gap-6
 }
@@ -53,6 +56,18 @@
     @apply flex items-center gap-6 px-6 md:px-8 py-4 bg-light-orange rounded-lg w-full max-w-[300px] md:max-w-[230px]
 }
 
+.card:nth-child(even), .cards-container > a:nth-child(even) > div{
+    @apply bg-white border-2 border-light-orange
+}
+
 .card img{
     @apply w-8 h-8
+}
+
+.cards-container {
+    @apply flex flex-wrap gap-4 my-14
+}
+
+.cards-container>a:nth-child(even)>div:hover{
+    @apply bg-light-orange
 }

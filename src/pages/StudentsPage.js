@@ -7,12 +7,13 @@ import EditStudent from './EditStudent'
 import { UserContext } from '../context/UserContext'
 // import search from '../assets/images/search.svg'
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
 
 function StudentsPage() {
   const [showForm, setShowForm] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [studentsCopy, setStudentsCopy] = useState([])
-  const { onchange, apiEndpoint, deleteUser, loading, setLoading } =
+  const { onchange, apiEndpoint, deleteUser,currentUser, loading, setLoading } =
     useContext(UserContext)
   const [selectedStudent, setSelectedStudent] = useState({})
   const [students, setStudents] = useState([])
@@ -77,7 +78,7 @@ function StudentsPage() {
   return (
     <div
       className={
-        loading || showForm ? 'overflow-hidden h-full max-h-[100vh]' : ''
+        loading || showForm || showEditForm ? 'overflow-hidden h-full max-h-[100vh]' : ''
       }>
       {showForm && (
         <CreateStudent handleClick={handleClick} setShowForm={setShowForm} />
@@ -94,7 +95,8 @@ function StudentsPage() {
 
       <Nav />
       <main className="container">
-        <div className="flex flex-col md:flex-row gap-2 justify-between md:items-center mb-10 mt-14">
+        <Link to={currentUser?.role_id === 2 ? '/teacher': '/admin'} className='inline-block mt-6 px-3 bg-neutral-100 hover:bg-neutral-200 shadow' >Back</Link>
+        <div className="flex flex-col md:flex-row gap-2 justify-between md:items-center mb-10 mt-8">
           <h3 className="text-2xl font-semibold">Students</h3>
           <div className="flex items-center gap-4">
             <div className="flex gap-2 items-center">
@@ -118,9 +120,8 @@ function StudentsPage() {
         <div className="overflow-x-auto">
           <Table striped>
             <Table.Head>
-              <Table.HeadCell>ID</Table.HeadCell>
-              <Table.HeadCell>First Name</Table.HeadCell>
-              <Table.HeadCell>Last Name</Table.HeadCell>
+              <Table.HeadCell>Id</Table.HeadCell>
+              <Table.HeadCell>Name</Table.HeadCell>
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell>Course</Table.HeadCell>
               <Table.HeadCell>Phone Number</Table.HeadCell>
@@ -139,14 +140,13 @@ function StudentsPage() {
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {student.student_id}
                     </Table.Cell>
-                    <Table.Cell>{student.first_name}</Table.Cell>
-                    <Table.Cell>{student.last_name}</Table.Cell>
+                    <Table.Cell>{student.first_name} {student.last_name}</Table.Cell>
                     <Table.Cell>{student.email}</Table.Cell>
                     <Table.Cell>{student.course}</Table.Cell>
                     <Table.Cell>{student.phone_number}</Table.Cell>
-                    <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">
+                    {/* <Table.Cell className="font-medium text-m-orange hover:underline cursor-pointer">
                       Download Report
-                    </Table.Cell>
+                    </Table.Cell> */}
                     <Table.Cell>
                       <span
                         onClick={() => handleEdit(student)}

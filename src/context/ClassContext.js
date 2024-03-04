@@ -1,50 +1,20 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
 
-const ClassContext = createContext();
+export const ClassContext = createContext();
 
 // const API_URL = 'https://attendance-tracker-backend-ws6l.onrender.com/';
 const API_URL = 'http://127.0.0.1:5000';
 
 export const ClassProvider = ({ children }) => {
   const [classes, setClasses] = useState([]);
-  const [classDetails] = useState({});
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // get all classes
-    const fetchClasses = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/class`, {
-            headers: {
-                Authorization:`Bearer ${sessionStorage.getItem('authToken')}`
-            }
-        });
-        setClasses(response.data);
-      } catch (error) {
-        setError('Error fetching classes');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchClasses();
-  }, []);
-
- 
-  // get students in a particular class
-  const fetchClassStudents = async (classId) => {
-    try {
-      const response = await axios.get(`${API_URL}/class/${classId}/students`);
-      setStudents(response.data);
-    } catch (error) {
-      setError('Error fetching class students');
-    }
-  };
+  
 
   // create a new class
   const addClass = async (classData) => {
@@ -65,20 +35,8 @@ export const ClassProvider = ({ children }) => {
 
   // update class details
   const updateClass = async (classId, updatedData) => {
+    setLoading(true)
     try {
-      // Show confirmation dialog
-      const result = await Swal.fire({
-        icon: 'warning',
-        title: 'Do you want to save the changes?',
-        text: 'Class Details will be updated!',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, update it!',
-      });
-  
-      if (result.isConfirmed) {
-        // User clicked "Yes, update it!"
         const response = await axios.patch(`${API_URL}/class/${classId}`, updatedData, {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -96,18 +54,19 @@ export const ClassProvider = ({ children }) => {
         });
   
         return response.data;
-      }
+      
     } catch (error) {
-      setError('Error updating class details');
-  
-      // Show error alert
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'There was an error updating the class details. Please try again.',
-      });
-  
+        setError('Error updating class details');
+    
+        // Show error alert
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'There was an error updating the class details. Please try again.',
+        });
       throw error;
+    } finally{
+        setLoading(false)
     }
   };
   
@@ -128,6 +87,7 @@ export const ClassProvider = ({ children }) => {
   
       if (result.isConfirmed) {
         // User clicked "Yes, delete it!"
+        setLoading(true)
         await axios.delete(`${API_URL}/class/${classId}`, {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
@@ -154,6 +114,8 @@ export const ClassProvider = ({ children }) => {
       });
   
       throw error;
+    } finally{
+        setLoading(false)
     }
   };
   
@@ -183,34 +145,22 @@ export const ClassProvider = ({ children }) => {
     }
   };
 
-  // mark attendance for student   
-  const markAttendance = async (classId) => {
-    try {
-      await axios.post(`${API_URL}/class/${classId}/attendance`);
-      // Optionally, update the local state or trigger a refetch if needed
-    } catch (error) {
-      setError('Error marking attendance');
-      throw error; // Rethrow the error for handling in the component
-    }
-  };
-
   return (
     <ClassContext.Provider
       value={{
         classes,
-        classDetails,
+        setClasses,
         students,
         loading,
+        setLoading,
         error,
-        // fetchClasses,
-        // fetchClassDetails,
-        fetchClassStudents,
+        setError,
         addClass,
         updateClass,
         deleteClass,
         addStudentToClass,
         removeStudentFromClass,
-        markAttendance,
+        API_URL
       }}
     >
       {children}

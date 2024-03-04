@@ -74,13 +74,13 @@ export default function UserProvider({ children }) {
           showConfirmButton: false,
           timer: 1500,
         })
-        navigate('/login')
+        navigate('/')
       } else {
-        Swal.fire({
-          icon: 'error',
-          text: 'Something went wrong. Try again',
-        })
-      }
+            navigate('/')
+            sessionStorage.removeItem('authToken')
+            setCurrentUser(null)
+            setAuthToken(null)
+    }
     })
   }
 

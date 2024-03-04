@@ -3,10 +3,9 @@ import upload from '../assets/images/upload.svg'
 import close from '../assets/images/close.svg'
 import Swal from 'sweetalert2'
 import { UserContext } from '../context/UserContext'
-import axios from 'axios'
 
 function CreateStudent({ setShowForm, handleClick }) {
-    const {createUser,apiEndpoint, loading,onchange, setOnchange, setLoading} = useContext(UserContext)
+    const {createUser,apiEndpoint, onchange, setOnchange, setLoading} = useContext(UserContext)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -31,42 +30,43 @@ function CreateStudent({ setShowForm, handleClick }) {
     e.preventDefault()
     setLoading(true)
     const formData = new FormData(e.currentTarget)
-    const file = Object.fromEntries(formData)
 
     try {
       const authToken = sessionStorage.getItem('authToken')
-      const requestOptions = {
+
+      const response = await fetch(
+        `${apiEndpoint}/upload_students`,{
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
         body: formData,
       }
-
-      const response = await fetch(
-        `${apiEndpoint}/upload_students`,
-        requestOptions
       )
-      const responseData = await response.json()
-
-      setLoading(false)
-      setOnchange(!onchange)
+      const data = await response.json()
 
       if (response.ok) {
-        Swal.fire({
-          title: 'Upload Successful!',
-          text: `${responseData.msg}, ${responseData.emails_in_use? responseData.emails_in_use.join('|') + ' already in use': ''}`,
-          icon: 'info',
-        })
+          Swal.fire({
+              title: 'Upload Successful!',
+              text: `${data.msg} ${data.emails_in_use.length > 0 ? ', ' +  data.emails_in_use.join(' | ') + ' already in use' : ''}`,
+              icon: 'info',
+            })
+          setOnchange(!onchange)
       } else {
-        throw new Error(responseData.error || 'Upload failed')
+        Swal.fire({
+            icon: 'error',
+            text: data?.error,
+        })
       }
     } catch (error) {
-      setLoading(false)
-      Swal.fire({
-        icon: 'error',
-        text: error?.message,
-      })
+        Swal.fire({
+            title: 'Upload Not Successful',
+            text: 'Make sure the file contains all the fields',
+            icon: 'info',
+        })
+        console.log(error);
+    } finally{
+        setLoading(false)
     }
   }
 
