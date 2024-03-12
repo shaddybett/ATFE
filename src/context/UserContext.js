@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
@@ -19,8 +19,33 @@ export default function UserProvider({ children }) {
   // const apiEndpoint = 'https://attendance-tracker-backend-ws6l.onrender.com'
   const apiEndpoint = 'http://127.0.0.1:5000'
 
+  // Get authenticated user
+  const getAuthenticatedUser = useCallback(() => {
+    if (sessionStorage.getItem('authToken')) {
+      fetch(`${apiEndpoint}/authenticated_user`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.email) {
+            setCurrentUser(data)
+          } else {
+            setCurrentUser(null)
+          }
+        })
+    }
+  }, [])
+
+  useEffect(() => {
+    getAuthenticatedUser()
+  }, [authToken, onchange,getAuthenticatedUser])
+
   //   Login User
-  function login(email, password) {
+  const login = useCallback((email, password) => {
     setLoading(true)
     fetch(`${apiEndpoint}/login`, {
       method: 'POST',
@@ -53,64 +78,11 @@ export default function UserProvider({ children }) {
           })
         }
       })
-  }
+  }, [getAuthenticatedUser, navigate, onchange])
 
-  // Logout user
-  function logout() {
-    fetch(`${apiEndpoint}/logout`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
-      },
-    }).then((response) => {
-      if (response.ok) {
-        sessionStorage.removeItem('authToken')
-        setCurrentUser(null)
-        setAuthToken(null)
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Logout successful',
-          showConfirmButton: false,
-          timer: 1500,
-        })
-        navigate('/')
-      } else {
-            navigate('/')
-            sessionStorage.removeItem('authToken')
-            setCurrentUser(null)
-            setAuthToken(null)
-    }
-    })
-  }
-
-  // Get authenticated user
-  function getAuthenticatedUser() {
-    if (sessionStorage.getItem('authToken')) {
-      fetch(`${apiEndpoint}/authenticated_user`, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.email) {
-            setCurrentUser(data)
-          } else {
-            setCurrentUser(null)
-          }
-        })
-    }
-  }
-
-  useEffect(() => {
-    getAuthenticatedUser()
-  }, [authToken, onchange])
-
+  
   // update user profile
-  async function updateProfile(user, id) {
+  const updateProfile = useCallback(async (user, id) => {
     setLoading(true)
     try {
       const resp = await axios.patch(`${apiEndpoint}/update/${id}`, user, {
@@ -119,21 +91,22 @@ export default function UserProvider({ children }) {
           Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
         },
       })
-      console.log(resp.status);
-      setLoading(false)
       setOnchange(!onchange)
+      setCurrentUser(resp?.data)
       Swal.fire('Success', 'Profile updated successfully', 'success')
     } catch (error) {
-      setLoading(false)
-      Swal.fire({
-        icon: 'error',
-        text: error?.response?.data?.error,
-      })
+        console.log(error);
+        Swal.fire({
+            icon: 'error',
+            text: error?.response?.data?.error,
+        })
+    } finally{
+        setLoading(false)
     }
-  }
+  },[onchange])
 
   // Add user
-  async function createUser(user, path){
+  const createUser = useCallback(async (user, path) => {
     setLoading(true)
     try {
         const resp = await axios.post(`${apiEndpoint}/${path}`,user, {
@@ -141,7 +114,6 @@ export default function UserProvider({ children }) {
             Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
           },
         })
-        setLoading(false)
         setOnchange(!onchange)
         Swal.fire({
             title: 'Success!',
@@ -149,16 +121,17 @@ export default function UserProvider({ children }) {
             icon: 'success',
         })
     } catch (error) {
-        setLoading(false)
         Swal.fire({
           icon: 'error',
           text: error?.response?.data?.error,
         })
+    } finally{
+        setLoading(false)
     }
-  }   
+  }, [onchange])
 
   // Delete user
-  async function deleteUser(id) {
+  const deleteUser = useCallback(async (id) => {
     setLoading(true)
     try {
         const resp = await axios.delete(`${apiEndpoint}/delete-user/${id}`, {
@@ -171,23 +144,24 @@ export default function UserProvider({ children }) {
             text: resp.data.message,
             icon: 'success',
         })
-        setLoading(false)
     } catch (error) {
-        setLoading(true)
       Swal.fire({
         icon: 'error',
         text: error?.response?.data?.error,
       })
+    } finally{
+        setLoading(false)
     }
-  }
+  },[])
 
   // Context data
-  const contextData = {
+  const contextData = useMemo(() => ({
     login,
-    logout,
     authToken,
     apiEndpoint,
     currentUser,
+    setCurrentUser,
+    setAuthToken,
     updateProfile,
     onchange,
     setOnchange,
@@ -195,7 +169,21 @@ export default function UserProvider({ children }) {
     loading,
     setLoading,
     createUser
-  }
+  }),[
+    login,
+    authToken,
+    apiEndpoint,
+    currentUser,
+    setCurrentUser,
+    setAuthToken,
+    updateProfile,
+    onchange,
+    setOnchange,
+    deleteUser,
+    loading,
+    setLoading,
+    createUser
+  ]) 
 
   return (
     <UserContext.Provider value={contextData}>{children}</UserContext.Provider>
