@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Nav from '../components/Nav';
 import grad from '../assets/images/grad.svg';
 import chevRight from '../assets/images/chevron-forward-outline.svg';
@@ -20,10 +20,8 @@ function TeacherDashboard() {
   const [showEditClassForm, setShowEditClassForm] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
 
-  useEffect(() => {
-    // get all classes
-    setLoading(true)
-    const fetchClasses = async () => {
+    const fetchClasses = useCallback(async () => {
+      setLoading(true)
       try {
         const response = await axios.get(`${API_URL}/class`, {
             headers: {
@@ -37,10 +35,11 @@ function TeacherDashboard() {
       } finally {
         setLoading(false);
       }
-    };
+    },[API_URL,setClasses,setError,setLoading])
 
+  useEffect(() => {
     fetchClasses();
-  }, [API_URL,setClasses, setError, setLoading]);
+  }, [fetchClasses]);
 
 
   const handleEditClass = (currentClass) => {
