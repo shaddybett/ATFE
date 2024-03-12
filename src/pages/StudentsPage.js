@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
 import CreateStudent from './CreateStudent'
 import Nav from '../components/Nav'
@@ -18,30 +18,37 @@ function StudentsPage() {
   const [selectedStudent, setSelectedStudent] = useState({})
   const [students, setStudents] = useState([])
 
-  useEffect(() => {
+  const fetchStudents = useCallback(async () => {
     setLoading(true)
-    fetch(`${apiEndpoint}/students`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    try {
+        const resp = await fetch(`${apiEndpoint}/students`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+            },
+        })
+        const data = await resp.json()
         setStudents(data)
         setStudentsCopy(data)
+    } catch (error) {
+        console.log(error);
+    } finally{
         setLoading(false)
-      })
-  }, [apiEndpoint, onchange, setLoading])
+    }
+  }, [apiEndpoint, setLoading])
 
-  function handleClick() {
+  useEffect(() => {
+      fetchStudents()
+  }, [fetchStudents, onchange])
+
+  const handleClick = useCallback(()=> {
     setShowForm(!showForm)
-  }
+  },[showForm])
 
-  function handleEdit(student) {
+  const handleEdit = useCallback((student) => {
     setShowEditForm(!showEditForm)
     setSelectedStudent(student)
-  }
+  }, [showEditForm])
 
   function handleSearch(e) {
     const filteredStudents = students.filter((student) => {
