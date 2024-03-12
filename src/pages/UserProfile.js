@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import Nav from "../components/Nav";
 import UpdateUserProfile from "./UpdateUserProfile";
 import { UserContext } from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 function UserProfile() {
   const [showForm, setShowForm] = useState(false);
@@ -22,6 +23,7 @@ function UserProfile() {
       )}
       <Nav />
       <div className="max-w-7xl mx-auto px-4 py-8 text-center">
+        <Link to={currentUser?.role_id === 3 ? '/student' : currentUser?.role_id === 2 ? '/teacher': '/admin'} className='block w-fit mt-6 px-3 bg-neutral-100 hover:bg-neutral-200 shadow' >Back</Link>
         <h2 className="text-2xl font-semibold mb-4">Personal Information</h2>
         <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
           {/* Left Column */}

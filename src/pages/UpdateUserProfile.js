@@ -57,7 +57,7 @@ function UpdateUserProfile({setShowForm, handleClick, currentUser}) {
             <input
               className="input"
               id="first_name"
-              name="fist_name"
+              name="first_name"
               type="text"
               defaultValue={currentUser?.first_name}
               required
