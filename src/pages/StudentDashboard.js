@@ -78,35 +78,34 @@ function handleChange(e) {
 }
 
 
-  function handleSubmit(e){
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const start_date = formData.get('start_date')
-    const end_date = formData.get('end_date')
+//   function handleSubmit(e){
+//     e.preventDefault()
+//     const formData = new FormData(e.currentTarget)
+//     const start_date = formData.get('start_date')
+//     const end_date = formData.get('end_date')
 
-    if (start_date === '' || end_date === ""){
-        Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Please choose both start and end dates',
-                showConfirmButton: true,
-                timer: 1500,
-        })	
-        return
-    }
+//     if (start_date === '' || end_date === ""){
+//         Swal.fire({
+//                 position: 'center',
+//                 icon: 'error',
+//                 title: 'Please choose both start and end dates',
+//                 showConfirmButton: true,
+//                 timer: 1500,
+//         })	
+//         return
+//     }
 
-    fetch(`${apiEndpoint}/generate-report`, {
-        method: 'POST',
-        headers:{
-            Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
-            'Content-Type':'application/json'
-        },
-        body:JSON.stringify({start_date, end_date})
-    })
-    .then(res => res)
+//     fetch(`${apiEndpoint}/generate-report`, {
+//         method: 'POST',
+//         headers:{
+//             Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+//             'Content-Type':'application/json'
+//         },
+//         body:JSON.stringify({start_date, end_date})
+//     })
+//     .then(res => res)
 
-
-  }
+//   }
 
   return (
     <div>
@@ -116,11 +115,11 @@ function handleChange(e) {
         <h3 className="my-10 text-2xl font-medium">
           Hello {currentUser?.first_name}, Welcome
         </h3>
-        <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+        <div className="flex flex-wrap gap-4 justify-center sm:justify-start lg:gap-6">
             {classInfo?.map(classData => {
                 return (
-                  <div key={classData.class_id} className="flex ">
-                    <div className="flex flex-col gap-1 px-4 md:px-6 py-6 rounded-lg bg-light-orange transition ">
+                  <div key={classData.class_id} className="flex">
+                    <div className="flex flex-col gap-1 px-4 md:px-6 py-6 rounded-lg bg-light-orange transition">
                       <div className="flex justify-between items-center mb-2">
                         <div className="flex flex-col">
                           <h3 className="text-2xl font-medium">
@@ -151,13 +150,13 @@ function handleChange(e) {
                         </div>
                         <div className="flex justify-between items-center">
                           <h4 className="text-xl font-medium mr-4">{((classData?.present_days / (classData?.present_days + classData?.absent_days)) * 100).toFixed(2)}%</h4>
-                          <h4 className="text-xl font-medium ml-2 text-green-600">
+                          <h4 className="text-xl font-medium ml-2 text-green-600 border-2 border-green-600 h-8 w-8 flex items-center justify-center rounded-full">
                             {classData?.present_days}
                           </h4>
-                          <h4 className="text-xl font-medium mr-2 text-rose-800">
+                          <h4 className="text-xl font-medium mr-2 text-rose-800 border-2 border-rose-800 h-8 w-8 flex items-center justify-center rounded-full">
                             {classData?.absent_days}
                           </h4>
-                          <h4 className="text-xl font-medium mr-6 text-neutral-400">
+                          <h4 className="text-xl font-medium mr-6 text-neutral-400 border-2 border-neutral-400 h-8 w-8 flex items-center justify-center rounded-full">
                             {classData?.late_days}
                           </h4>
                         </div>
