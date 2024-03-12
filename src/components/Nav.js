@@ -1,11 +1,42 @@
-import {useContext} from 'react'
+import {useCallback, useContext} from 'react'
 import { Navbar, Dropdown } from 'flowbite-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import logoImage from '../assets/images/moringalogo.png'
+import Swal from 'sweetalert2'
 
 function Nav() {
-    const {logout, currentUser, apiEndpoint} = useContext(UserContext)
+  const {currentUser, setCurrentUser, setAuthToken, apiEndpoint} = useContext(UserContext)
+  const navigate = useNavigate()
+
+
+  const logout = useCallback(()=> {
+    fetch(`${apiEndpoint}/logout`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        sessionStorage.removeItem('authToken')
+        setCurrentUser(null)
+        setAuthToken(null)
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Logout successful',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+        navigate('/')
+      } else {
+            navigate('/')
+            sessionStorage.removeItem('authToken')
+            setCurrentUser(null)
+            setAuthToken(null)
+    }
+    })
+  },[navigate, apiEndpoint, setAuthToken, setCurrentUser])
 
   return (
     <header className="shadow-bs-light">
