@@ -55,31 +55,31 @@ function AdminDashboard() {
               </div>
             </Link>
             <Link to="." className="block w-full max-w-[350px]">
-              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+              {/* <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition"> */}
                 {/* <img className="w-12 h-12" src={grad} alt="icon" /> */}
-                <div className="flex justify-between w-full items-end">
+                {/* <div className="flex justify-between w-full items-end">
                   <h3 className="text-3xl font-medium">Departments</h3>
                   <img className="w-7 h-7" src={chevRight} alt="icon" />
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */}
             </Link>
             <Link to="." className="block w-full max-w-[350px]">
-              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+              <div >
                 {/* <img className="w-12 h-12" src={grad} alt="icon" /> */}
-                <div className="flex justify-between w-full items-end">
+                {/* <div className="flex justify-between w-full items-end">
                   <h3 className="text-3xl font-medium">Courses</h3>
                   <img className="w-7 h-7" src={chevRight} alt="icon" />
-                </div>
+                </div> */}
               </div>
             </Link>
             <Link to="." className="block w-full max-w-[350px]">
-              <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition">
+              {/* <div className="flex gap-4 items-center px-4 pb-4 pt-10 rounded-lg bg-light-orange hover:bg-t-orange transition"> */}
                 {/* <img className="w-12 h-12" src={grad} alt="icon" /> */}
-                <div className="flex justify-between w-full items-end">
+                {/* <div className="flex justify-between w-full items-end">
                   <h3 className="text-3xl font-medium">Roles</h3>
                   <img className="w-7 h-7" src={chevRight} alt="icon" />
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */}
             </Link>
           </div>
           <TeachersTable handleClick={handleClick} handleEditTeacher={handleEditTeacher}/>
